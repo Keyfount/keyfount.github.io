@@ -38,13 +38,20 @@ export const STRINGS = {
 
   /* hero */
   hero_headline: { en: "Nothing to keep.", fr: "Rien à garder." },
+  hero_subtitle: {
+    en: "A password manager that stores nothing. Your passwords are recomputed on demand, identical on every device, with no cloud and no sync.",
+    fr: "Un gestionnaire de mots de passe qui ne stocke rien. Vos mots de passe sont recalculés à la demande, identiques sur chaque appareil, sans cloud ni synchronisation.",
+  },
   hero_status: {
     en: "regenerating · never stored",
     fr: "régénération · jamais stockés",
   },
   hero_cta_source: { en: "Get the source", fr: "Voir le code source" },
   hero_cta_how: { en: "How it works", fr: "Comment ça marche" },
-  hero_cta_try: { en: "Try it here", fr: "Essayer ici" },
+  hero_cta_try: { en: "Try it live", fr: "Essayer en direct" },
+  hero_cta_install: { en: "Install for Chrome", fr: "Installer pour Chrome" },
+  hero_cta_install_soon: { en: "Pre-release", fr: "Pré-version" },
+  hero_keycap_hint: { en: "press space", fr: "appuyer sur espace" },
 
   /* how it works */
   how_tag: { en: "how it works", fr: "fonctionnement" },
@@ -164,6 +171,97 @@ export const STRINGS = {
   try_min_master: {
     en: "Master password must be at least 8 characters.",
     fr: "Le mot de passe maître doit faire au moins 8 caractères.",
+  },
+
+  /* determinism / magic moment */
+  determinism_tag: { en: "the magic moment", fr: "le déclic" },
+  determinism_title: {
+    en: "Same inputs in, same password out.",
+    fr: "Mêmes entrées, même mot de passe.",
+  },
+  determinism_body: {
+    en: "Watch it. The same three inputs always produce the same password — anywhere, anytime. There is nothing to store because there is nothing to lose.",
+    fr: "Regardez. Les mêmes trois entrées produisent toujours le même mot de passe — partout, à tout moment. Rien à stocker, donc rien à perdre.",
+  },
+  determinism_input_master: { en: "master", fr: "maître" },
+  determinism_input_site: { en: "site", fr: "site" },
+  determinism_input_email: { en: "email", fr: "email" },
+  determinism_output: { en: "derived password", fr: "mot de passe dérivé" },
+  determinism_action_clear: { en: "Forget it", fr: "Tout effacer" },
+  determinism_action_recompute: { en: "Recompute", fr: "Recalculer" },
+  determinism_action_again: { en: "Again, on this device", fr: "Encore, sur cet appareil" },
+  determinism_proof_match: { en: "Identical output", fr: "Sortie identique" },
+  determinism_caption: {
+    en: "No network. No storage. The same function runs on every device — the extension on Chrome, the demo on this page, your phone tomorrow.",
+    fr: "Pas de réseau. Pas de stockage. La même fonction tourne sur chaque appareil — l'extension Chrome, la démo de cette page, votre téléphone demain.",
+  },
+
+  /* code excerpt in Promise */
+  promise_code_caption: {
+    en: "The whole derivation, in seven lines of TypeScript.",
+    fr: "Toute la dérivation, en sept lignes de TypeScript.",
+  },
+  promise_code_read: { en: "Read the full algorithm", fr: "Lire l'algorithme complet" },
+
+  /* pull quote */
+  pullquote_text: {
+    en: "A vault you don't own can't be stolen, leaked, or held hostage.",
+    fr: "Un coffre que vous ne possédez pas ne peut être ni volé, ni fuité, ni pris en otage.",
+  },
+  pullquote_attr: {
+    en: "the design principle, in one line",
+    fr: "le principe de conception, en une ligne",
+  },
+
+  /* FAQ / honest objections */
+  faq_tag: { en: "honest objections", fr: "objections honnêtes" },
+  faq_title: {
+    en: "The questions you should ask.",
+    fr: "Les questions que vous devez poser.",
+  },
+  faq_body: {
+    en: "A deterministic manager is different. Different brings honest trade-offs — here are the ones that matter.",
+    fr: "Un gestionnaire déterministe, c'est différent. Différent implique des compromis honnêtes — voici ceux qui comptent.",
+  },
+  faq_q1: {
+    en: "What if I forget my master password?",
+    fr: "Et si j'oublie mon mot de passe maître ?",
+  },
+  faq_a1: {
+    en: "There is no recovery — by design. The master never leaves your head and never lives on a server, so no one (including us) can reset it. Pick a master strong enough to keep, weak enough to remember. The extension supports an optional, locally-encrypted backup hint to help you settle on one.",
+    fr: "Il n'y a aucune récupération — par conception. Le maître ne quitte jamais votre tête, n'est jamais sur un serveur, donc personne (nous compris) ne peut le réinitialiser. Choisissez un maître assez fort pour durer, assez simple pour le retenir. L'extension propose un indice de sauvegarde local et chiffré pour vous aider à le fixer.",
+  },
+  faq_q2: {
+    en: "What if a site forces me to change a password?",
+    fr: "Et si un site m'oblige à changer un mot de passe ?",
+  },
+  faq_a2: {
+    en: "Every entry has a counter. Bump it from 1 to 2 and the algorithm derives an entirely new password for the same site — no master change needed. The counter is the only thing the extension actually remembers, and it's just a small integer per domain.",
+    fr: "Chaque entrée a un compteur. Passez-le de 1 à 2 et l'algorithme dérive un mot de passe entièrement neuf pour le même site — sans changer le maître. Le compteur est la seule chose que l'extension retient vraiment, et c'est un simple entier par domaine.",
+  },
+  faq_q3: {
+    en: "How do I migrate from my current manager?",
+    fr: "Comment migrer depuis mon gestionnaire actuel ?",
+  },
+  faq_a3: {
+    en: "Gradually. Keep your existing vault read-only. For each site you actually use, log in once, change the password to a derived one, and stop syncing that entry. After a few weeks, the vault is empty and you can delete it. No risky bulk import.",
+    fr: "Progressivement. Gardez votre coffre actuel en lecture seule. Pour chaque site que vous utilisez vraiment, connectez-vous une fois, remplacez le mot de passe par un mot de passe dérivé et arrêtez de synchroniser cette entrée. Au bout de quelques semaines, le coffre est vide et vous pouvez le supprimer. Aucun import en bloc risqué.",
+  },
+  faq_q4: {
+    en: "What about sites with weird password rules?",
+    fr: "Et les sites aux règles de mot de passe bizarres ?",
+  },
+  faq_a4: {
+    en: "Each site can have its own derivation profile — length, character classes, suffix rules. The extension stores those profiles (just metadata, never the password itself) so the same site always derives a password that the site will actually accept.",
+    fr: "Chaque site peut avoir son propre profil de dérivation — longueur, classes de caractères, règles de suffixe. L'extension stocke ces profils (juste les métadonnées, jamais le mot de passe) pour qu'un même site dérive toujours un mot de passe que le site acceptera.",
+  },
+  faq_q5: {
+    en: "Can I trust an algorithm you wrote?",
+    fr: "Puis-je faire confiance à un algorithme que vous avez écrit ?",
+  },
+  faq_a5: {
+    en: "Don't. The derivation is Argon2id, the same memory-hard function recommended by OWASP and used by 1Password's secret key, applied to a small, public mixing scheme. The whole source is on GitHub under MIT, the bundle is reproducible, and the network tab stays empty when you use it. Verify, then trust — in that order.",
+    fr: "Non. La dérivation, c'est Argon2id, la même fonction mémoire-intensive recommandée par OWASP, appliquée à un petit schéma de mélange public. Tout le code est sur GitHub sous licence MIT, le bundle est reproductible, et l'onglet réseau reste vide quand vous l'utilisez. Vérifiez d'abord, faites confiance ensuite.",
   },
 
   /* language switcher */
