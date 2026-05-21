@@ -1,34 +1,29 @@
 ---
+import { useT } from "~/i18n/index.js";
+import type { Locale } from "~/i18n/translations.js";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useT(locale);
+
 const steps = [
-  {
-    label: "01",
-    title: "You remember the master.",
-    body: "Pick a master password you can hold in your head. It never leaves this device.",
-  },
-  {
-    label: "02",
-    title: "We salt with site and email.",
-    body: "Each derivation mixes your master with the site's registrable domain and the email you use there.",
-  },
-  {
-    label: "03",
-    title: "Argon2id produces a password.",
-    body: "A memory-hard key-derivation function turns the inputs into a unique, reproducible password — and forgets.",
-  },
+  { label: "01", title: t("how_step1_title"), body: t("how_step1_body") },
+  { label: "02", title: t("how_step2_title"), body: t("how_step2_body") },
+  { label: "03", title: t("how_step3_title"), body: t("how_step3_body") },
 ];
 ---
 
 <section id="how-it-works" class="relative isolate border-t border-(--color-ink-5) px-6 py-32">
   <div class="mx-auto flex w-full max-w-5xl flex-col gap-16">
     <header class="flex max-w-2xl flex-col gap-4">
-      <span class="mono-tag">how it works</span>
+      <span class="mono-tag">{t("how_tag")}</span>
       <h2 class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl">
-        A function, not a vault.
+        {t("how_title")}
       </h2>
-      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">
-        ItsMyPassword doesn't keep your passwords anywhere. It recomputes them on demand from three
-        inputs you control — same inputs in, same password out, on any device, with nothing to sync.
-      </p>
+      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">{t("how_body")}</p>
     </header>
 
     <ol

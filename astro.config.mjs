@@ -7,12 +7,24 @@ import sitemap from "@astrojs/sitemap";
  * The site is deployed to GitHub Pages under the /website/ subpath of the
  * org's github.io domain. Once a custom domain is wired up, drop `base` and
  * update `site` to the canonical URL.
+ *
+ * i18n: English is the default and lives at the root. French lives under
+ * /fr/. Astro handles the routing; the t() helper in src/i18n/ picks the
+ * right strings per request.
  */
 export default defineConfig({
   site: "https://itsmypassword.github.io",
   base: "/website",
   trailingSlash: "ignore",
   prefetch: true,
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "fr"],
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: false,
+    },
+  },
   build: {
     inlineStylesheets: "auto",
   },

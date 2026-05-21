@@ -1,27 +1,30 @@
 ---
+import { useT } from "~/i18n/index.js";
+import type { Locale } from "~/i18n/translations.js";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useT(locale);
+
 const claims = [
-  { label: "No vault", body: "Nothing to encrypt, decrypt, sync or leak." },
-  {
-    label: "No cloud",
-    body: "The extension makes zero network calls. Read the bundle and verify.",
-  },
-  { label: "No telemetry", body: "No analytics, no error reporting, no third-party SDKs." },
-  { label: "Open source", body: "Algorithm, UI and tests are MIT-licensed on GitHub." },
+  { label: t("promise_no_vault"), body: t("promise_no_vault_body") },
+  { label: t("promise_no_cloud"), body: t("promise_no_cloud_body") },
+  { label: t("promise_no_telemetry"), body: t("promise_no_telemetry_body") },
+  { label: t("promise_oss"), body: t("promise_oss_body") },
 ];
 ---
 
 <section class="relative isolate border-t border-(--color-ink-5) px-6 py-32">
   <div class="mx-auto flex w-full max-w-5xl flex-col gap-12">
     <header class="flex max-w-2xl flex-col gap-4">
-      <span class="mono-tag">the promise</span>
+      <span class="mono-tag">{t("promise_tag")}</span>
       <h2 class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl">
-        Less to trust.
+        {t("promise_title")}
       </h2>
-      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">
-        Most password managers ask you to trust a vault, a sync service, and the encryption around
-        both. ItsMyPassword asks you to trust a single algorithm — short enough to read in an
-        evening.
-      </p>
+      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">{t("promise_body")}</p>
     </header>
 
     <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
