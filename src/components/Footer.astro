@@ -1,5 +1,5 @@
 ---
-import { useT } from "~/i18n/index.js";
+import { useT, pathHelper } from "~/i18n/index.js";
 import type { Locale } from "~/i18n/translations.js";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
@@ -10,43 +10,70 @@ interface Props {
 
 const { locale, path } = Astro.props;
 const t = useT(locale);
+const local = pathHelper(locale);
 
 const links = [
-  { label: t("footer_extension"), href: "https://github.com/ItsMyPassword/extension" },
-  { label: t("footer_website"), href: "https://github.com/ItsMyPassword/website" },
-  { label: t("footer_org"), href: "https://github.com/ItsMyPassword" },
+  { label: t("footer_extension"), href: "https://github.com/ItsMyPassword/extension", external: true },
+  { label: t("footer_website"), href: "https://github.com/ItsMyPassword/website", external: true },
+  { label: t("footer_org"), href: "https://github.com/ItsMyPassword", external: true },
+];
+const legalLinks = [
+  { label: t("legal_terms"), href: local.to("/legal/terms") },
+  { label: t("legal_privacy"), href: local.to("/legal/privacy") },
+  { label: t("legal_security"), href: local.to("/legal/security") },
 ];
 const year = new Date().getFullYear();
 ---
 
 <footer class="relative isolate border-t border-(--color-ink-5) px-6 py-12">
-  <div
-    class="mx-auto flex w-full max-w-5xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center"
-  >
-    <div class="flex items-center gap-3">
-      <span class="grid h-7 w-7 place-items-center rounded-md text-(--color-ink-0)">
-        <svg viewBox="0 0 100 100" class="h-5 w-5" fill="currentColor" aria-hidden="true">
-          <path
-            d="m70 10.9h-60.2c-4.4 0.1-8.1 4-8 8.7v60.8c0 4.5 3.4 8.7 8.3 8.7h59.9c4.3 0 8.7-3.4 8.7-8.7v-60.8c-0.1-4.2-3.7-8.6-8.7-8.7zm3.9 70.6c-0.5 1.4-1.9 2.7-3.9 2.7h-60.1c-1.9-0.1-3.3-1.4-3.8-3.5v-61.1c0.1-1.9 1.8-3.8 3.9-3.9h60c2.2 0 3.9 1.9 4 3.8v60.9l-0.1 1.1z"
-          ></path>
-          <path
-            d="m91.6 42.7c-3.7-0.3-7.5 2.4-7.5 7.1-0.1 3.6 2.5 7.5 7.3 7.6 3.5 0 7-2.8 7-7.4 0.1-3.6-2.9-6.9-6.8-7.3z"
-          ></path>
-          <rect x="19.1" y="33.2" width="3.4" height="33"></rect>
-        </svg>
-      </span>
-      <span class="text-sm font-medium tracking-tight text-(--color-ink-1)">ItsMyPassword</span>
-      <span class="mono-tag ml-2">© {year} · MIT</span>
+  <div class="mx-auto flex w-full max-w-5xl flex-col gap-10">
+    <div
+      class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center"
+    >
+      <div class="flex items-center gap-3">
+        <span class="grid h-7 w-7 place-items-center rounded-md text-(--color-ink-0)">
+          <svg viewBox="0 0 100 100" class="h-5 w-5" fill="currentColor" aria-hidden="true">
+            <path
+              d="m70 10.9h-60.2c-4.4 0.1-8.1 4-8 8.7v60.8c0 4.5 3.4 8.7 8.3 8.7h59.9c4.3 0 8.7-3.4 8.7-8.7v-60.8c-0.1-4.2-3.7-8.6-8.7-8.7zm3.9 70.6c-0.5 1.4-1.9 2.7-3.9 2.7h-60.1c-1.9-0.1-3.3-1.4-3.8-3.5v-61.1c0.1-1.9 1.8-3.8 3.9-3.9h60c2.2 0 3.9 1.9 4 3.8v60.9l-0.1 1.1z"
+            ></path>
+            <path
+              d="m91.6 42.7c-3.7-0.3-7.5 2.4-7.5 7.1-0.1 3.6 2.5 7.5 7.3 7.6 3.5 0 7-2.8 7-7.4 0.1-3.6-2.9-6.9-6.8-7.3z"
+            ></path>
+            <rect x="19.1" y="33.2" width="3.4" height="33"></rect>
+          </svg>
+        </span>
+        <span class="text-sm font-medium tracking-tight text-(--color-ink-1)">ItsMyPassword</span>
+        <span class="mono-tag ml-2">© {year} · MIT</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6 text-sm">
+        <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 text-(--color-ink-3)">
+          {
+            links.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="transition-colors hover:text-(--color-ink-0)"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+        <LanguageSwitcher locale={locale} path={path} />
+      </div>
     </div>
 
-    <div class="flex flex-wrap items-center gap-6 text-sm">
-      <nav class="flex items-center gap-6 text-(--color-ink-3)">
+    <div
+      class="flex flex-col gap-3 border-t border-(--color-ink-5) pt-6 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <span class="mono-tag">{t("legal_section")}</span>
+      <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-(--color-ink-3)">
         {
-          links.map((link) => (
+          legalLinks.map((link) => (
             <a
               href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
               class="transition-colors hover:text-(--color-ink-0)"
             >
               {link.label}
@@ -54,7 +81,6 @@ const year = new Date().getFullYear();
           ))
         }
       </nav>
-      <LanguageSwitcher locale={locale} path={path} />
     </div>
   </div>
 </footer>
