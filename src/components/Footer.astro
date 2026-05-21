@@ -1,8 +1,20 @@
 ---
+import { useT } from "~/i18n/index.js";
+import type { Locale } from "~/i18n/translations.js";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const t = useT(locale);
+
 const links = [
-  { label: "Extension", href: "https://github.com/ItsMyPassword/extension" },
-  { label: "Website", href: "https://github.com/ItsMyPassword/website" },
-  { label: "Organisation", href: "https://github.com/ItsMyPassword" },
+  { label: t("footer_extension"), href: "https://github.com/ItsMyPassword/extension" },
+  { label: t("footer_website"), href: "https://github.com/ItsMyPassword/website" },
+  { label: t("footer_org"), href: "https://github.com/ItsMyPassword" },
 ];
 const year = new Date().getFullYear();
 ---
@@ -27,19 +39,22 @@ const year = new Date().getFullYear();
       <span class="mono-tag ml-2">© {year} · MIT</span>
     </div>
 
-    <nav class="flex flex-wrap items-center gap-6 text-sm text-(--color-ink-3)">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="transition-colors hover:text-(--color-ink-0)"
-          >
-            {link.label}
-          </a>
-        ))
-      }
-    </nav>
+    <div class="flex flex-wrap items-center gap-6 text-sm">
+      <nav class="flex items-center gap-6 text-(--color-ink-3)">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-colors hover:text-(--color-ink-0)"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+      <LanguageSwitcher locale={locale} path={path} />
+    </div>
   </div>
 </footer>

@@ -1,0 +1,102 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Footer from "./Footer.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { pathHelper, useT } from "~/i18n/index.js";
+import type { Locale } from "~/i18n/translations.js";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useT(locale);
+const p = pathHelper(locale);
+
+/**
+ * Strings shipped to the client-side generator as a data attribute.
+ * Keeping the contract here means the generator script doesn't need to
+ * know about the i18n catalogue layout.
+ */
+const generatorStrings = {
+  tryMaster: t("try_master"),
+  trySite: t("try_site"),
+  trySitePlaceholder: t("try_site_placeholder"),
+  tryEmail: t("try_email"),
+  tryEmailPlaceholder: t("try_email_placeholder"),
+  tryMode: t("try_mode"),
+  tryModeRandom: t("try_mode_random"),
+  tryModeMemorable: t("try_mode_memorable"),
+  tryLength: t("try_length"),
+  tryWords: t("try_words"),
+  trySeparator: t("try_separator"),
+  tryCounter: t("try_counter"),
+  tryClasses: t("try_classes"),
+  tryClassLower: t("try_class_lower"),
+  tryClassUpper: t("try_class_upper"),
+  tryClassDigits: t("try_class_digits"),
+  tryClassSymbols: t("try_class_symbols"),
+  tryCapitalise: t("try_capitalise"),
+  trySuffix: t("try_suffix"),
+  tryGenerate: t("try_generate"),
+  tryGenerating: t("try_generating"),
+  tryCopy: t("try_copy"),
+  tryCopied: t("try_copied"),
+  tryReveal: t("try_reveal"),
+  tryHide: t("try_hide"),
+  tryDisclaimer: t("try_disclaimer"),
+  tryMinMaster: t("try_min_master"),
+};
+---
+
+<Layout locale={locale} path="/try" title={t("try_meta_title")} description={t("try_body")}>
+  <div class="relative min-h-screen px-6 py-12 sm:py-20">
+    <div class="mx-auto mb-12 flex w-full max-w-2xl items-center justify-between">
+      <a
+        href={p.to("/")}
+        class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-(--color-ink-3) transition-colors hover:text-(--color-ink-1)"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+        {t("try_back_home")}
+      </a>
+      <LanguageSwitcher locale={locale} path="/try" />
+    </div>
+
+    <header class="mx-auto mb-10 flex w-full max-w-2xl flex-col gap-4 text-center">
+      <h1
+        class="headline-gradient m-0 font-extrabold tracking-[-0.025em] leading-[1.05]"
+        style="font-size: clamp(40px, 5vw, 64px);"
+      >
+        {t("try_title")}
+      </h1>
+      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">{t("try_body")}</p>
+    </header>
+
+    <div class="mx-auto w-full max-w-2xl">
+      <div id="generator-root" data-strings={JSON.stringify(generatorStrings)}></div>
+    </div>
+  </div>
+
+  <Footer locale={locale} path="/try" />
+</Layout>
+
+<script>
+  import { mountGenerator } from "~/scripts/generator.ts";
+
+  const root = document.getElementById("generator-root");
+  if (root !== null) {
+    const strings = JSON.parse(root.dataset.strings ?? "{}");
+    mountGenerator({ root, strings });
+  }
+</script>
