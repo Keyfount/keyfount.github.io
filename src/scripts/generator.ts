@@ -57,7 +57,6 @@ export function mountGenerator(opts: MountOptions): void {
   const dynamic = $<HTMLDivElement>("[data-region=dynamic]");
   const statusEl = $<HTMLDivElement>("[data-region=status]");
   const errorBox = $<HTMLDivElement>("[data-region=error]");
-  const resultBox = $<HTMLDivElement>("[data-region=result]");
   const resultValue = $<HTMLElement>("[data-region=result-value]");
   const revealBtn = $<HTMLButtonElement>("[data-action=reveal]");
   const copyBtn = $<HTMLButtonElement>("[data-action=copy]");
