@@ -2,6 +2,7 @@
 import { useT } from "~/i18n/index.js";
 import type { Locale } from "~/i18n/translations.js";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 
 interface Props {
   locale: Locale;
@@ -15,14 +16,14 @@ const t = useT(locale);
   <div
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 z-[3]"
-    style="background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, transparent 30%, oklch(0.06 0.004 260 / 0.55) 75%, oklch(0.04 0.004 260 / 0.95) 100%);"
+    style="background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, transparent 30%, var(--vignette-stop) 75%, var(--vignette-edge) 100%);"
   >
   </div>
 
   <div
     aria-hidden="true"
-    class="pointer-events-none fixed inset-0 z-[4] opacity-[0.035] [mix-blend-mode:overlay]"
-    style="background-image: url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>&quot;);"
+    class="pointer-events-none fixed inset-0 z-[4]"
+    style="opacity: var(--grain-opacity); mix-blend-mode: var(--grain-mix); background-image: url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>&quot;);"
   >
   </div>
 
@@ -31,24 +32,14 @@ const t = useT(locale);
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 z-[1] h-full w-full"></canvas>
 
-  <div aria-hidden="true" class="pointer-events-none fixed inset-7 z-[5] mono-tag">
+  <div class="pointer-events-none fixed inset-7 z-[5] mono-tag">
     <div class="absolute top-0 left-0 flex items-center gap-2">
-      <span class="block h-2 w-2 border border-current"></span>
+      <span aria-hidden="true" class="block h-2 w-2 border border-current"></span>
       <span>{t("corner_brand")}</span>
     </div>
-    <div class="absolute top-0 right-0 flex items-center gap-2 pointer-events-auto">
+    <div class="absolute top-0 right-0 flex items-center gap-3 pointer-events-auto">
       <LanguageSwitcher locale={locale} path="/" />
-      <span class="block h-2 w-2 border border-current"></span>
-    </div>
-    <div class="absolute bottom-0 left-0 flex items-center gap-2">
-      <span class="block h-2 w-2 border border-current"></span>
-      <span>{t("corner_entropy")}</span>
-    </div>
-    <div class="absolute bottom-0 right-0 flex items-center gap-2">
-      <span id="seen-count" data-template={t("corner_counter_template", { N: "000000" })}>
-        {t("corner_counter_template", { N: "000000" })}
-      </span>
-      <span class="block h-2 w-2 border border-current"></span>
+      <ThemeToggle />
     </div>
   </div>
 
@@ -149,17 +140,6 @@ const t = useT(locale);
         {t("hero_cta_source")}
       </a>
     </div>
-
-    <div
-      class="mt-6 flex items-center gap-3.5 font-mono text-[11px] uppercase tracking-[0.22em] text-(--color-ink-3) select-none"
-    >
-      <span
-        class="inline-grid h-[22px] w-[22px] place-items-center rounded-[5px] text-[11px] text-(--color-ink-1)"
-        style="background: linear-gradient(180deg, oklch(0.28 0.004 260), oklch(0.18 0.004 260)); box-shadow: inset 0 1px 0 oklch(0.50 0.004 260 / 0.5), inset 0 -1px 0 oklch(0.06 0.004 260), 0 1px 0 oklch(0.06 0.004 260);"
-        >␣</span
-      >
-      <span>{t("hero_press_space")}</span>
-    </div>
   </div>
 
   <div
@@ -201,6 +181,22 @@ const t = useT(locale);
       cx = 0,
       cy = 0;
     let dots: { x: number; y: number; base: number }[] = [];
+
+    // Read the active theme's dot colour from CSS — re-read on theme change
+    // so the canvas recolours without a full re-render.
+    let dotColour = readDotColour();
+    function readDotColour() {
+      return (
+        getComputedStyle(document.documentElement).getPropertyValue("--color-dot").trim() ||
+        "0.92 0.004 260"
+      );
+    }
+    new MutationObserver(() => {
+      dotColour = readDotColour();
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -255,7 +251,7 @@ const t = useT(locale);
         }
         if (a < 0.02) continue;
         const size = a > 0.5 ? 1.5 : 1.1;
-        ctx.fillStyle = `oklch(0.92 0.004 260 / ${Math.min(a, 0.95)})`;
+        ctx.fillStyle = `oklch(${dotColour} / ${Math.min(a, 0.95)})`;
         ctx.beginPath();
         ctx.arc(d.x, d.y, size, 0, Math.PI * 2);
         ctx.fill();

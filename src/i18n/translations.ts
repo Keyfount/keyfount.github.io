@@ -35,22 +35,12 @@ export const STRINGS = {
 
   /* corners */
   corner_brand: { en: "itsmypassword", fr: "itsmypassword" },
-  corner_build: { en: "v0.1 · ephemeral build", fr: "v0.1 · build éphémère" },
-  corner_entropy: { en: "entropy · 256 bits", fr: "entropie · 256 bits" },
-  corner_counter_template: {
-    en: "$N$ generated · 000000 kept",
-    fr: "$N$ générés · 000000 gardés",
-  },
 
   /* hero */
   hero_headline: { en: "Nothing to keep.", fr: "Rien à garder." },
   hero_status: {
     en: "regenerating · never stored",
     fr: "régénération · jamais stockés",
-  },
-  hero_press_space: {
-    en: "press space to summon one",
-    fr: "appuyez sur espace pour en invoquer un",
   },
   hero_cta_source: { en: "Get the source", fr: "Voir le code source" },
   hero_cta_how: { en: "How it works", fr: "Comment ça marche" },

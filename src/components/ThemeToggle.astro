@@ -1,0 +1,52 @@
+---
+// Stateless trigger — the inline boot script in Layout.astro reads
+// localStorage on first paint, this button only toggles the class
+// and writes the user's choice back to localStorage.
+---
+
+<button type="button" class="theme-toggle" aria-label="Toggle colour scheme" data-theme-toggle>
+  <svg
+    class="icon-moon h-3.5 w-3.5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+  </svg>
+  <svg
+    class="icon-sun h-3.5 w-3.5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4 4.2 19.8M19.8 4.2l-1.4 1.4"
+    ></path>
+  </svg>
+</button>
+
+<script>
+  function setTheme(dark: boolean) {
+    document.documentElement.classList.toggle("dark", dark);
+    try {
+      localStorage.setItem("theme", dark ? "dark" : "light");
+    } catch {
+      /* private mode — ignore */
+    }
+  }
+  document.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement | null;
+    const button = target?.closest<HTMLButtonElement>("[data-theme-toggle]");
+    if (button === null || button === undefined) return;
+    setTheme(!document.documentElement.classList.contains("dark"));
+  });
+</script>
