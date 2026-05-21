@@ -29,16 +29,31 @@ const snippet = `export async function derive(master, site, email, counter) {
 ---
 
 <section class="relative isolate border-t border-(--color-ink-5) px-6 py-32">
-  <div class="mx-auto flex w-full max-w-5xl flex-col gap-16">
-    <header data-reveal class="flex max-w-2xl flex-col gap-4">
-      <span class="mono-tag">{t("promise_tag")}</span>
-      <h2
-        class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl"
-      >
-        {t("promise_title")}
-      </h2>
-      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">{t("promise_body")}</p>
-    </header>
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-16">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+      <header data-reveal class="flex flex-col gap-4">
+        <span class="mono-tag">{t("promise_tag")}</span>
+        <h2
+          class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl"
+        >
+          {t("promise_title")}
+        </h2>
+        <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">{t("promise_body")}</p>
+      </header>
+
+      <ul data-reveal-stagger class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {
+          claims.map((claim) => (
+            <li class="surface flex flex-col gap-3">
+              <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-(--color-ink-3)">
+                {claim.label}
+              </span>
+              <p class="m-0 text-pretty text-(--color-ink-1)">{claim.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
 
     <figure data-reveal class="m-0 flex flex-col items-center gap-3 text-center">
       <blockquote
@@ -52,19 +67,6 @@ const snippet = `export async function derive(master, site, email, counter) {
       </blockquote>
       <figcaption class="mono-tag">{t("pullquote_attr")}</figcaption>
     </figure>
-
-    <ul data-reveal-stagger class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {
-        claims.map((claim) => (
-          <li class="surface flex flex-col gap-3">
-            <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-(--color-ink-3)">
-              {claim.label}
-            </span>
-            <p class="m-0 text-pretty text-(--color-ink-1)">{claim.body}</p>
-          </li>
-        ))
-      }
-    </ul>
 
     <div data-reveal class="flex flex-col gap-4">
       <div class="rounded-2xl border border-(--color-ink-5) bg-(--color-bg-1) overflow-hidden">
