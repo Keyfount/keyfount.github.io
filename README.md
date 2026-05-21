@@ -2,16 +2,20 @@
 
 > The landing page for [ItsMyPassword](https://github.com/ItsMyPassword/extension), a deterministic password manager Chrome extension.
 
-A single dark, near-silent page. A pulsing keycap, a silver-to-graphite headline, and a stream of crypto-random passwords that appear and dissolve without ever being stored — a literal visualisation of the product's promise.
+A quiet, dark single-page site built around the **"Nothing to keep."** hero — a pulsing keycap, a silver-to-graphite headline, and a stream of crypto-random passwords that appear and dissolve without ever being stored.
 
-## How it works
+## Stack
 
-- `index.html` — the markup
-- `src/styles.css` — design tokens, keycap geometry, headline gradient, masking, animations
-- `src/main.js` — three small modules: dot-grid canvas, password vapour stream, keycap interactions
-- `public/logo.svg` — the brand mark, used as the favicon
+|             |                                                                                |
+| ----------- | ------------------------------------------------------------------------------ |
+| Framework   | **Astro 5** (zero-JS by default, ships only the hero's canvas script)          |
+| Styling     | **Tailwind CSS v4** via `@tailwindcss/vite`, tokens declared with `@theme`     |
+| Type checks | **TypeScript strict** + `astro check`                                          |
+| Fonts       | **Geist Sans + Geist Mono** (variable, self-hosted via `@fontsource-variable`) |
+| Sitemap     | `@astrojs/sitemap`                                                             |
+| Deploy      | GitHub Pages, workflow in `.github/workflows/deploy.yml`                       |
 
-No framework. Vite handles dev server, bundling and minification.
+Total cold-load JavaScript is ~1 KB gzipped — only the hero's canvas + custom-cursor wiring ships. Everything else is plain HTML.
 
 ## Run locally
 
@@ -20,7 +24,7 @@ npm install
 npm run dev
 ```
 
-Vite serves the site at `http://localhost:5173`.
+Astro serves the site at <http://localhost:4321>.
 
 ## Production build
 
@@ -29,9 +33,26 @@ npm run build      # outputs to dist/
 npm run preview    # serves the production build locally
 ```
 
+`npm run check` runs `astro check` (template type checking).
+
+## Structure
+
+```
+src/
+├── layouts/Layout.astro         # <html> shell, SEO meta, JSON-LD, fonts
+├── components/
+│   ├── Hero.astro               # the "Nothing to keep." canvas hero
+│   ├── HowItWorks.astro         # three-step explainer
+│   ├── Promise.astro            # "less to trust" claims grid
+│   ├── Install.astro            # CTA pulling toward the GitHub repo
+│   └── Footer.astro
+├── pages/index.astro            # composes the page
+└── styles/global.css            # Tailwind entry + design tokens + atoms
+```
+
 ## Deployment
 
-The site is deployed to GitHub Pages via the workflow in `.github/workflows/deploy.yml`. Every push to `main` rebuilds and publishes.
+Every push to `main` rebuilds and publishes to GitHub Pages at <https://itsmypassword.github.io/website/>. The Astro `base: "/website"` config keeps asset URLs aligned with the Pages subpath.
 
 ## Licence
 

@@ -1,0 +1,50 @@
+---
+const steps = [
+  {
+    label: "01",
+    title: "You remember the master.",
+    body: "Pick a master password you can hold in your head. It never leaves this device.",
+  },
+  {
+    label: "02",
+    title: "We salt with site and email.",
+    body: "Each derivation mixes your master with the site's registrable domain and the email you use there.",
+  },
+  {
+    label: "03",
+    title: "Argon2id produces a password.",
+    body: "A memory-hard key-derivation function turns the inputs into a unique, reproducible password — and forgets.",
+  },
+];
+---
+
+<section id="how-it-works" class="relative isolate border-t border-(--color-ink-5) px-6 py-32">
+  <div class="mx-auto flex w-full max-w-5xl flex-col gap-16">
+    <header class="flex max-w-2xl flex-col gap-4">
+      <span class="mono-tag">how it works</span>
+      <h2 class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl">
+        A function, not a vault.
+      </h2>
+      <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">
+        ItsMyPassword doesn't keep your passwords anywhere. It recomputes them on demand from three
+        inputs you control — same inputs in, same password out, on any device, with nothing to sync.
+      </p>
+    </header>
+
+    <ol
+      class="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-ink-5) bg-(--color-ink-5) sm:grid-cols-3"
+    >
+      {
+        steps.map((step) => (
+          <li class="flex flex-col gap-4 bg-(--color-bg-1) p-8">
+            <span class="mono-tag">{step.label}</span>
+            <h3 class="m-0 text-xl font-semibold tracking-[-0.015em] text-(--color-ink-0)">
+              {step.title}
+            </h3>
+            <p class="m-0 text-pretty text-sm leading-relaxed text-(--color-ink-2)">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

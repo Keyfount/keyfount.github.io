@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itsmypassword.github.io/website/sitemap-index.xml

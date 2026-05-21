@@ -1,0 +1,82 @@
+---
+import "~/styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path of the page, used for the canonical + OG URL. */
+  path?: string;
+}
+
+const {
+  title = "ItsMyPassword — Nothing to keep.",
+  description = "A deterministic password manager Chrome extension. No vault, no sync, no cloud. Just an algorithm.",
+  path = Astro.url.pathname,
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site).toString();
+const ogImage = new URL(`${import.meta.env.BASE_URL}/og.png`, Astro.site).toString();
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "ItsMyPassword",
+  applicationCategory: "BrowserApplication",
+  operatingSystem: "Chrome",
+  description,
+  url: canonical,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  publisher: {
+    "@type": "Organization",
+    name: "ItsMyPassword",
+    url: "https://github.com/ItsMyPassword",
+  },
+  license: "https://opensource.org/licenses/MIT",
+};
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0a0a10" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {/* Favicons */}
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/logo.svg`} />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="ItsMyPassword" />
+
+    {/* Twitter / X */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {/* Preload key font weight used in the headline */}
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2"
+      crossorigin
+    />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body class="min-h-screen overflow-x-hidden">
+    <slot />
+  </body>
+</html>
