@@ -20,6 +20,12 @@ export function getLocale(url: URL | string): Locale {
   return DEFAULT_LOCALE;
 }
 
+/** Returns the Astro `base` path with a trailing slash trimmed. */
+function basePath(): string {
+  const raw = import.meta.env.BASE_URL ?? "/";
+  return raw === "/" ? "" : raw.replace(/\/$/, "");
+}
+
 export type Translator = (key: StringKey, vars?: Record<string, string>) => string;
 
 export function useT(locale: Locale): Translator {
@@ -42,11 +48,20 @@ export interface LocalePath {
   to: (path: string) => string;
 }
 
-/** Path helper for the active locale. Useful in links to keep them localised. */
+/**
+ * Path helper for the active locale. Always returns absolute URLs prefixed
+ * with the Astro base — anchor links (`#try`) pass through unchanged so the
+ * one-page sections stay clickable.
+ */
 export function pathHelper(locale: Locale): LocalePath {
-  const prefix = locale === DEFAULT_LOCALE ? "" : `/${locale}`;
+  const localePrefix = locale === DEFAULT_LOCALE ? "" : `/${locale}`;
+  const base = basePath();
   return {
-    prefix,
-    to: (path: string) => `${prefix}${path.startsWith("/") ? path : `/${path}`}`,
+    prefix: `${base}${localePrefix}`,
+    to: (path: string) => {
+      if (path.startsWith("#")) return path;
+      const slash = path.startsWith("/") ? path : `/${path}`;
+      return `${base}${localePrefix}${slash === "/" ? "/" : slash}`;
+    },
   };
 }
