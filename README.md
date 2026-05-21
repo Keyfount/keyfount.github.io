@@ -52,7 +52,7 @@ src/
 
 ## Deployment
 
-Every push to `main` rebuilds and publishes to GitHub Pages at <https://itsmypassword.github.io/website/>. The Astro `base: "/website"` config keeps asset URLs aligned with the Pages subpath.
+Every push to `main` rebuilds and publishes to GitHub Pages at <https://itsmypassword.github.io/>. The repository is named `itsmypassword.github.io`, so GitHub serves it at the org's root domain without a base path.
 
 ## Licence
 

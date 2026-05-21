@@ -13,10 +13,7 @@ import { DEFAULT_LOCALE, type Locale, STRINGS, type StringKey } from "./translat
 
 export function getLocale(url: URL | string): Locale {
   const pathname = typeof url === "string" ? url : url.pathname;
-  // The Astro base ("/website") is already stripped from Astro.url.pathname
-  // but we strip it defensively in case this helper is called with a raw URL.
-  const stripped = pathname.replace(/^\/website/, "");
-  if (stripped.startsWith("/fr")) return "fr";
+  if (pathname.startsWith("/fr")) return "fr";
   return DEFAULT_LOCALE;
 }
 
