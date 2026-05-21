@@ -18,7 +18,7 @@ const steps = [
 
 <section id="how-it-works" class="relative isolate border-t border-(--color-ink-5) px-6 py-32">
   <div class="mx-auto flex w-full max-w-5xl flex-col gap-16">
-    <header class="flex max-w-2xl flex-col gap-4">
+    <header data-reveal class="flex max-w-2xl flex-col gap-4">
       <span class="mono-tag">{t("how_tag")}</span>
       <h2 class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl">
         {t("how_title")}
@@ -27,6 +27,7 @@ const steps = [
     </header>
 
     <ol
+      data-reveal-stagger
       class="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-ink-5) bg-(--color-ink-5) sm:grid-cols-3"
     >
       {

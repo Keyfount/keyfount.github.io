@@ -97,5 +97,33 @@ const structuredData = {
   <body class="min-h-screen overflow-x-hidden">
     <GlobalChrome locale={locale} path={path} />
     <slot />
+
+    <script>
+      /**
+       * Scroll-reveal. Adds `.is-revealed` to any element tagged with
+       * `data-reveal` or `data-reveal-stagger` once it crosses ~15% into
+       * the viewport. Each element is unobserved after firing so the
+       * work is bounded by the number of decorated elements.
+       */
+      const targets = document.querySelectorAll<HTMLElement>(
+        "[data-reveal], [data-reveal-stagger]"
+      );
+      if (targets.length > 0 && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-revealed");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -15% 0px", threshold: 0.12 }
+        );
+        targets.forEach((el) => io.observe(el));
+      } else {
+        targets.forEach((el) => el.classList.add("is-revealed"));
+      }
+    </script>
   </body>
 </html>

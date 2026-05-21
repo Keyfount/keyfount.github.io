@@ -30,7 +30,7 @@ const snippet = `export async function derive(master, site, email, counter) {
 
 <section class="relative isolate border-t border-(--color-ink-5) px-6 py-32">
   <div class="mx-auto flex w-full max-w-5xl flex-col gap-16">
-    <header class="flex max-w-2xl flex-col gap-4">
+    <header data-reveal class="flex max-w-2xl flex-col gap-4">
       <span class="mono-tag">{t("promise_tag")}</span>
       <h2
         class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl"
@@ -40,7 +40,7 @@ const snippet = `export async function derive(master, site, email, counter) {
       <p class="m-0 text-pretty text-(--color-ink-2) sm:text-lg">{t("promise_body")}</p>
     </header>
 
-    <figure class="m-0 flex flex-col items-center gap-3 text-center">
+    <figure data-reveal class="m-0 flex flex-col items-center gap-3 text-center">
       <blockquote
         class="m-0 max-w-3xl text-balance font-semibold tracking-[-0.02em] text-(--color-ink-0)"
         style="font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15;"
@@ -53,7 +53,7 @@ const snippet = `export async function derive(master, site, email, counter) {
       <figcaption class="mono-tag">{t("pullquote_attr")}</figcaption>
     </figure>
 
-    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <ul data-reveal-stagger class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {
         claims.map((claim) => (
           <li class="surface flex flex-col gap-3">
@@ -66,7 +66,7 @@ const snippet = `export async function derive(master, site, email, counter) {
       }
     </ul>
 
-    <div class="flex flex-col gap-4">
+    <div data-reveal class="flex flex-col gap-4">
       <div class="rounded-2xl border border-(--color-ink-5) bg-(--color-bg-1) overflow-hidden">
         <div
           class="flex items-center justify-between border-b border-(--color-ink-5) px-5 py-3"
