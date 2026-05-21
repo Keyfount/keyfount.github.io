@@ -7,6 +7,10 @@
  * through `registrableDomain()` (PSL-aware via tldts) before being fed
  * to the KDF, so `accounts.google.com` and `google.com` derive the same
  * password — same behaviour you'd get from the extension on either tab.
+ *
+ * Derivation runs in real time as the user types or tweaks a setting —
+ * the call is debounced so we don't queue a fresh Argon2id pass on
+ * every keystroke, and a generation counter discards stale results.
  */
 import { derivePassword } from "~/lib/crypto/derive.js";
 import {
@@ -24,6 +28,8 @@ interface MountOptions {
   strings: Strings;
 }
 
+const DEBOUNCE_MS = 280;
+
 export function mountGenerator(opts: MountOptions): void {
   const { root, strings: s } = opts;
 
@@ -33,6 +39,8 @@ export function mountGenerator(opts: MountOptions): void {
   let revealed = false;
   let copied = false;
   let error: string | null = null;
+  let debounceTimer: number | null = null;
+  let runId = 0;
 
   root.innerHTML = template(s);
 
@@ -47,7 +55,7 @@ export function mountGenerator(opts: MountOptions): void {
   const emailEl = $<HTMLInputElement>("[data-field=email]");
   const modeWrap = $<HTMLDivElement>("[data-field=mode]");
   const dynamic = $<HTMLDivElement>("[data-region=dynamic]");
-  const submit = $<HTMLButtonElement>("[data-action=generate]");
+  const statusEl = $<HTMLDivElement>("[data-region=status]");
   const errorBox = $<HTMLDivElement>("[data-region=error]");
   const resultBox = $<HTMLDivElement>("[data-region=result]");
   const resultValue = $<HTMLElement>("[data-region=result-value]");
@@ -56,13 +64,12 @@ export function mountGenerator(opts: MountOptions): void {
 
   /* ── input wiring ─────────────────────────────────────── */
 
-  masterEl.addEventListener("input", () => {
-    clearResult();
-  });
-  siteEl.addEventListener("input", clearResult);
-  emailEl.addEventListener("input", clearResult);
   siteEl.value = "example.com";
   emailEl.value = "you@example.com";
+
+  masterEl.addEventListener("input", scheduleDerive);
+  siteEl.addEventListener("input", scheduleDerive);
+  emailEl.addEventListener("input", scheduleDerive);
 
   modeWrap.addEventListener("click", (event) => {
     const target = event.target as HTMLElement | null;
@@ -76,17 +83,7 @@ export function mountGenerator(opts: MountOptions): void {
         : { ...DEFAULT_MEMORABLE_PROFILE, counter: profile.counter };
     paintMode();
     paintDynamic();
-    clearResult();
-  });
-
-  submit.addEventListener("click", (event) => {
-    event.preventDefault();
-    void generate();
-  });
-
-  $<HTMLFormElement>("form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    void generate();
+    scheduleDerive();
   });
 
   revealBtn.addEventListener("click", () => {
@@ -109,21 +106,35 @@ export function mountGenerator(opts: MountOptions): void {
     );
   });
 
-  /* ── async derive ─────────────────────────────────────── */
+  /* ── debounced derive ─────────────────────────────────── */
 
-  async function generate() {
+  function scheduleDerive() {
+    if (debounceTimer !== null) window.clearTimeout(debounceTimer);
+    // Show a spinner / placeholder while typing so the UI stays responsive.
+    result = null;
+    revealed = false;
+    copied = false;
     error = null;
+    paintError();
+    paintStatus();
+    paintResult();
+    debounceTimer = window.setTimeout(() => {
+      void derive();
+    }, DEBOUNCE_MS);
+  }
+
+  async function derive() {
+    debounceTimer = null;
     if (masterEl.value.length < 8) {
-      error = s.tryMinMaster;
-      paintError();
+      busy = false;
+      paintStatus();
+      paintResult();
       return;
     }
+    const myRun = ++runId;
     busy = true;
-    paintBusy();
+    paintStatus();
     try {
-      // Normalise the typed domain exactly like the extension does, so the
-      // browser demo and the extension produce the same password for the
-      // same site.
       const domain = registrableDomain(siteEl.value);
       const pw = await derivePassword({
         inputs: {
@@ -133,16 +144,21 @@ export function mountGenerator(opts: MountOptions): void {
         },
         profile,
       });
+      // A newer keystroke started another run: discard this one.
+      if (myRun !== runId) return;
       result = pw;
-      revealed = false;
-      copied = false;
+      error = null;
     } catch (err) {
+      if (myRun !== runId) return;
       error = err instanceof Error ? err.message : "generation failed";
+      result = null;
     } finally {
-      busy = false;
-      paintError();
-      paintResult();
-      paintBusy();
+      if (myRun === runId) {
+        busy = false;
+        paintError();
+        paintResult();
+        paintStatus();
+      }
     }
   }
 
@@ -171,7 +187,7 @@ export function mountGenerator(opts: MountOptions): void {
         else profile = { ...profile, wordCount: value };
         const display = dynamic.querySelector<HTMLElement>("[data-control=range-value]");
         if (display !== null) display.textContent = String(value);
-        clearResult();
+        scheduleDerive();
       });
     }
 
@@ -181,7 +197,7 @@ export function mountGenerator(opts: MountOptions): void {
         const key = toggle.dataset.class as "lower" | "upper" | "digits" | "symbols";
         if (profile.mode !== "random") return;
         profile = { ...profile, [key]: toggle.checked };
-        clearResult();
+        scheduleDerive();
       });
     }
 
@@ -194,7 +210,7 @@ export function mountGenerator(opts: MountOptions): void {
         for (const b of dynamic.querySelectorAll<HTMLButtonElement>("button[data-separator]")) {
           b.setAttribute("aria-pressed", String(b.dataset.separator === sep));
         }
-        clearResult();
+        scheduleDerive();
       });
     }
 
@@ -204,7 +220,7 @@ export function mountGenerator(opts: MountOptions): void {
         const key = toggle.dataset.bool as "capitalise" | "suffix";
         if (profile.mode !== "memorable") return;
         profile = { ...profile, [key]: toggle.checked } as MemorableProfile;
-        clearResult();
+        scheduleDerive();
       });
     }
 
@@ -215,7 +231,7 @@ export function mountGenerator(opts: MountOptions): void {
         const n = Number.parseInt(counter.value, 10);
         if (Number.isFinite(n) && n >= 1) {
           profile = { ...profile, counter: n };
-          clearResult();
+          scheduleDerive();
         }
       });
     }
@@ -231,40 +247,43 @@ export function mountGenerator(opts: MountOptions): void {
     }
   }
 
+  function paintStatus() {
+    if (busy) {
+      statusEl.innerHTML = `<span class="inline-block h-1.5 w-1.5 rounded-full bg-[oklch(0.62_0.10_150)] shadow-[0_0_8px_oklch(0.62_0.10_150/0.7)] [animation:var(--animate-pulse-dot)]"></span><span>${s.tryGenerating}</span>`;
+      statusEl.classList.remove("hidden");
+    } else if (result !== null) {
+      statusEl.innerHTML = `<span class="inline-block h-1.5 w-1.5 rounded-full bg-(--color-ink-3)"></span><span>argon2id · ${profile.mode}</span>`;
+      statusEl.classList.remove("hidden");
+    } else if (masterEl.value.length < 8) {
+      statusEl.innerHTML = `<span class="inline-block h-1.5 w-1.5 rounded-full bg-(--color-ink-5)"></span><span>${s.tryIdle}</span>`;
+      statusEl.classList.remove("hidden");
+    } else {
+      statusEl.classList.add("hidden");
+    }
+  }
+
   function paintResult() {
+    revealBtn.disabled = result === null;
+    copyBtn.disabled = result === null;
     if (result === null) {
-      resultBox.classList.add("hidden");
+      resultValue.textContent = "—";
+      resultValue.classList.add("text-(--color-ink-4)");
+      resultValue.classList.remove("text-(--color-ink-0)", "text-(--color-ink-3)", "tracking-[0.15em]");
+      revealBtn.textContent = s.tryReveal;
+      copyBtn.textContent = s.tryCopy;
       return;
     }
-    resultBox.classList.remove("hidden");
     if (revealed) {
       resultValue.textContent = result;
-      resultValue.classList.remove("tracking-[0.15em]", "text-(--color-ink-3)");
+      resultValue.classList.remove("tracking-[0.15em]", "text-(--color-ink-3)", "text-(--color-ink-4)");
       resultValue.classList.add("text-(--color-ink-0)");
     } else {
       resultValue.textContent = "•".repeat(Math.min(result.length, 32));
       resultValue.classList.add("tracking-[0.15em]", "text-(--color-ink-3)");
-      resultValue.classList.remove("text-(--color-ink-0)");
+      resultValue.classList.remove("text-(--color-ink-0)", "text-(--color-ink-4)");
     }
     revealBtn.textContent = revealed ? s.tryHide : s.tryReveal;
     copyBtn.textContent = copied ? s.tryCopied : s.tryCopy;
-  }
-
-  function paintBusy() {
-    submit.disabled = busy || masterEl.value.length < 8;
-    submit.textContent = busy ? s.tryGenerating : s.tryGenerate;
-  }
-
-  function clearResult() {
-    if (result !== null || error !== null) {
-      result = null;
-      error = null;
-      revealed = false;
-      copied = false;
-      paintResult();
-      paintError();
-    }
-    paintBusy();
   }
 
   // Initial paint.
@@ -272,10 +291,7 @@ export function mountGenerator(opts: MountOptions): void {
   paintDynamic();
   paintResult();
   paintError();
-  paintBusy();
-
-  // Re-enable the submit button as the user types.
-  masterEl.addEventListener("input", paintBusy);
+  paintStatus();
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -284,54 +300,62 @@ export function mountGenerator(opts: MountOptions): void {
 
 function template(s: Strings) {
   return `
-    <form autocomplete="off" class="surface flex flex-col gap-5">
-      <label class="flex flex-col gap-2">
-        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.tryMaster}</span>
-        <input data-field="master" type="password" autocomplete="new-password"
-          class="h-10 rounded-lg border border-(--color-ink-5) bg-(--color-bg-2) px-3 font-sans text-sm text-(--color-ink-1) outline-none transition-colors duration-150 focus:border-(--color-ink-4)" />
-      </label>
+    <form autocomplete="off" class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-8 lg:items-start">
+      <div class="surface flex flex-col gap-5">
+        <div class="mono-tag">${s.trySettings}</div>
 
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label class="flex flex-col gap-2">
-          <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.trySite}</span>
-          <input data-field="site" type="text" placeholder="${s.trySitePlaceholder}"
-            class="h-10 rounded-lg border border-(--color-ink-5) bg-(--color-bg-2) px-3 font-mono text-sm text-(--color-ink-1) outline-none transition-colors duration-150 focus:border-(--color-ink-4)" />
+          <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.tryMaster}</span>
+          <input data-field="master" type="password" autocomplete="new-password"
+            class="h-10 rounded-lg border border-(--color-ink-5) bg-(--color-bg-2) px-3 font-sans text-sm text-(--color-ink-1) outline-none transition-colors duration-150 focus:border-(--color-ink-4)" />
         </label>
-        <label class="flex flex-col gap-2">
-          <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.tryEmail}</span>
-          <input data-field="email" type="email" placeholder="${s.tryEmailPlaceholder}"
-            class="h-10 rounded-lg border border-(--color-ink-5) bg-(--color-bg-2) px-3 font-mono text-sm text-(--color-ink-1) outline-none transition-colors duration-150 focus:border-(--color-ink-4)" />
-        </label>
-      </div>
 
-      <div class="flex flex-col gap-3">
-        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.tryMode}</span>
-        <div data-field="mode" class="grid grid-cols-2 gap-[2px] rounded-lg bg-(--color-bg-2) p-[3px]">
-          <button type="button" data-mode="random"
-            class="h-8 rounded-md text-xs font-medium text-(--color-ink-3) transition-colors aria-pressed:bg-(--color-bg-1) aria-pressed:text-(--color-ink-0) aria-pressed:shadow-[0_1px_2px_rgba(0,0,0,0.25)]">${s.tryModeRandom}</button>
-          <button type="button" data-mode="memorable"
-            class="h-8 rounded-md text-xs font-medium text-(--color-ink-3) transition-colors aria-pressed:bg-(--color-bg-1) aria-pressed:text-(--color-ink-0) aria-pressed:shadow-[0_1px_2px_rgba(0,0,0,0.25)]">${s.tryModeMemorable}</button>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <label class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.trySite}</span>
+            <input data-field="site" type="text" placeholder="${s.trySitePlaceholder}"
+              class="h-10 rounded-lg border border-(--color-ink-5) bg-(--color-bg-2) px-3 font-mono text-sm text-(--color-ink-1) outline-none transition-colors duration-150 focus:border-(--color-ink-4)" />
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.tryEmail}</span>
+            <input data-field="email" type="email" placeholder="${s.tryEmailPlaceholder}"
+              class="h-10 rounded-lg border border-(--color-ink-5) bg-(--color-bg-2) px-3 font-mono text-sm text-(--color-ink-1) outline-none transition-colors duration-150 focus:border-(--color-ink-4)" />
+          </label>
         </div>
+
+        <div class="flex flex-col gap-3">
+          <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-(--color-ink-3)">${s.tryMode}</span>
+          <div data-field="mode" class="grid grid-cols-2 gap-[2px] rounded-lg bg-(--color-bg-2) p-[3px]">
+            <button type="button" data-mode="random"
+              class="h-8 rounded-md text-xs font-medium text-(--color-ink-3) transition-colors aria-pressed:bg-(--color-bg-1) aria-pressed:text-(--color-ink-0) aria-pressed:shadow-[0_1px_2px_rgba(0,0,0,0.25)]">${s.tryModeRandom}</button>
+            <button type="button" data-mode="memorable"
+              class="h-8 rounded-md text-xs font-medium text-(--color-ink-3) transition-colors aria-pressed:bg-(--color-bg-1) aria-pressed:text-(--color-ink-0) aria-pressed:shadow-[0_1px_2px_rgba(0,0,0,0.25)]">${s.tryModeMemorable}</button>
+          </div>
+        </div>
+
+        <div data-region="dynamic" class="flex flex-col gap-5"></div>
       </div>
 
-      <div data-region="dynamic" class="flex flex-col gap-5"></div>
+      <div class="surface flex flex-col gap-5 lg:sticky lg:top-6">
+        <div class="flex items-center justify-between gap-3">
+          <span class="mono-tag">${s.tryResult}</span>
+          <div data-region="status" class="status-pill"></div>
+        </div>
 
-      <button data-action="generate" type="submit"
-        class="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-(--color-ink-0) px-5 text-sm font-medium text-(--color-bg-0) transition-[transform,background-color] duration-200 hover:bg-(--color-ink-1) active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 [box-shadow:0_1px_0_oklch(1_0_0_/_0.1)_inset,0_12px_28px_-8px_oklch(0_0_0_/_0.5)]">${s.tryGenerate}</button>
+        <div class="flex min-h-[88px] items-center rounded-xl border border-(--color-ink-5) bg-(--color-bg-2) px-4 py-4">
+          <code data-region="result-value" class="block w-full break-all font-mono text-base leading-relaxed text-(--color-ink-4)">—</code>
+        </div>
 
-      <div data-region="error" class="hidden text-sm text-red-400" role="alert"></div>
-
-      <div data-region="result" class="hidden flex-col gap-3 rounded-xl border border-(--color-ink-5) bg-(--color-bg-2) p-4 flex">
-        <code data-region="result-value" class="block break-all font-mono text-sm leading-relaxed text-(--color-ink-3) tracking-[0.15em]"></code>
-        <div class="flex gap-2">
+        <div class="flex flex-wrap gap-2">
           <button type="button" data-action="reveal"
-            class="inline-flex h-8 items-center justify-center rounded-full border border-(--color-ink-5) bg-transparent px-4 text-xs font-medium text-(--color-ink-1) transition-colors hover:bg-(--color-bg-1)">${s.tryReveal}</button>
+            class="inline-flex h-9 items-center justify-center rounded-full border border-(--color-ink-5) bg-transparent px-4 text-xs font-medium text-(--color-ink-1) transition-colors hover:bg-(--color-bg-1) disabled:cursor-not-allowed disabled:opacity-40">${s.tryReveal}</button>
           <button type="button" data-action="copy"
-            class="inline-flex h-8 items-center justify-center rounded-full border border-(--color-ink-5) bg-transparent px-4 text-xs font-medium text-(--color-ink-1) transition-colors hover:bg-(--color-bg-1)">${s.tryCopy}</button>
+            class="inline-flex h-9 items-center justify-center rounded-full border border-(--color-ink-5) bg-transparent px-4 text-xs font-medium text-(--color-ink-1) transition-colors hover:bg-(--color-bg-1) disabled:cursor-not-allowed disabled:opacity-40">${s.tryCopy}</button>
         </div>
-      </div>
 
-      <p class="m-0 text-xs leading-relaxed text-(--color-ink-3)">${s.tryDisclaimer}</p>
+        <div data-region="error" class="hidden text-sm text-red-400" role="alert"></div>
+        <p class="m-0 text-xs leading-relaxed text-(--color-ink-3)">${s.tryDisclaimer}</p>
+      </div>
     </form>
   `;
 }
