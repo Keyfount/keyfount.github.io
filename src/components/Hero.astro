@@ -30,10 +30,13 @@ const t = useT(locale);
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 z-[1] h-full w-full"></canvas>
 
-  <div class="relative z-[2] flex flex-col items-center gap-0">
+  <div
+    class="relative z-[2] mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16"
+  >
+    <div class="flex flex-col items-center gap-10 lg:items-center">
     <div
       id="keycapWrap"
-      class="relative mb-14 grid h-[156px] w-[156px] place-items-center [animation:var(--animate-breathe)]"
+      class="relative grid h-[156px] w-[156px] place-items-center [animation:var(--animate-breathe)]"
     >
       <div
         class="pointer-events-none absolute inset-[-60%] rounded-full blur-lg [animation:var(--animate-halo)]"
@@ -72,10 +75,20 @@ const t = useT(locale);
       </div>
     </div>
 
+    <div
+      id="stream"
+      aria-hidden="true"
+      class="relative h-[168px] overflow-hidden"
+      style="width: min(560px, 80vw); -webkit-mask: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); -webkit-mask-composite: source-in; mask: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); mask-composite: intersect;"
+    >
+    </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
     <div class="relative">
       <h1
-        class="headline-gradient m-0 text-center font-extrabold tracking-[-0.045em] leading-[0.95]"
-        style="font-size: clamp(48px, 7.2vw, 104px);"
+        class="headline-gradient m-0 font-extrabold tracking-[-0.045em] leading-[0.95]"
+        style="font-size: clamp(48px, 6.4vw, 88px);"
       >
         {t("hero_headline")}
       </h1>
@@ -87,28 +100,18 @@ const t = useT(locale);
       </span>
     </div>
 
-    <p
-      class="m-0 mt-6 max-w-2xl text-balance text-center text-(--color-ink-2) sm:text-lg"
-    >
+    <p class="m-0 max-w-xl text-balance text-(--color-ink-2) sm:text-lg">
       {t("hero_subtitle")}
     </p>
 
-    <div
-      id="stream"
-      aria-hidden="true"
-      class="relative mt-10 h-[168px] overflow-hidden"
-      style="width: min(880px, 78vw); -webkit-mask: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); -webkit-mask-composite: source-in; mask: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); mask-composite: intersect;"
-    >
-    </div>
-
-    <div class="mt-8 status-pill">
+    <div class="status-pill">
       <span
         class="block h-1.5 w-1.5 rounded-full bg-[oklch(0.62_0.10_150)] shadow-[0_0_8px_oklch(0.62_0.10_150/0.7)] [animation:var(--animate-pulse-dot)]"
       ></span>
       <span>{t("hero_status")}</span>
     </div>
 
-    <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+    <div class="mt-2 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
       <a href="#try" class="btn-primary">
         <svg
           viewBox="0 0 24 24"
@@ -148,6 +151,7 @@ const t = useT(locale);
       >
         {t("hero_cta_source")}
       </a>
+    </div>
     </div>
   </div>
 </section>
