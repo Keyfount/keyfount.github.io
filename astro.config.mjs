@@ -4,9 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 /**
- * The site is deployed to GitHub Pages under the /website/ subpath of the
- * org's github.io domain. Once a custom domain is wired up, drop `base` and
- * update `site` to the canonical URL.
+ * The site is deployed to GitHub Pages at the root of the org's
+ * github.io domain — the repository is named `itsmypassword.github.io`,
+ * which GitHub serves at https://itsmypassword.github.io/ directly.
  *
  * i18n: English is the default and lives at the root. French lives under
  * /fr/. Astro handles the routing; the t() helper in src/i18n/ picks the
@@ -14,7 +14,6 @@ import sitemap from "@astrojs/sitemap";
  */
 export default defineConfig({
   site: "https://itsmypassword.github.io",
-  base: "/website",
   trailingSlash: "ignore",
   prefetch: true,
   i18n: {

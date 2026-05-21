@@ -4,10 +4,10 @@
   "private": true,
   "description": "Landing page for the ItsMyPassword browser extension.",
   "license": "MIT",
-  "homepage": "https://itsmypassword.github.io/website/",
+  "homepage": "https://itsmypassword.github.io/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ItsMyPassword/website.git"
+    "url": "https://github.com/ItsMyPassword/itsmypassword.github.io.git"
   },
   "type": "module",
   "engines": {

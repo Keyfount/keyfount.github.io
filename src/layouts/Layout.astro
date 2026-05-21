@@ -19,7 +19,7 @@ const fullTitle = title ?? t("meta_title");
 const fullDescription = description ?? t("meta_description");
 
 const canonical = new URL(`${pathHelper(locale).to(path)}`, Astro.site).toString();
-const ogImage = new URL(`${import.meta.env.BASE_URL}/og.png`, Astro.site).toString();
+const ogImage = new URL("og.png", Astro.site).toString();
 
 const alternates = LOCALES.map((loc) => ({
   locale: loc,
@@ -77,7 +77,7 @@ const structuredData = {
     {alternates.map((alt) => <link rel="alternate" hreflang={alt.locale} href={alt.href} />)}
     <link rel="alternate" hreflang="x-default" href={alternates[0]!.href} />
 
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/logo.svg`} />
+    <link rel="icon" type="image/svg+xml" href={new URL("logo.svg", Astro.site).pathname} />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={locale === "fr" ? "fr_FR" : "en_US"} />
