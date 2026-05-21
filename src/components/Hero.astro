@@ -87,6 +87,12 @@ const t = useT(locale);
       </span>
     </div>
 
+    <p
+      class="m-0 mt-6 max-w-2xl text-balance text-center text-(--color-ink-2) sm:text-lg"
+    >
+      {t("hero_subtitle")}
+    </p>
+
     <div
       id="stream"
       aria-hidden="true"
@@ -120,7 +126,23 @@ const t = useT(locale);
       </a>
       <a
         href="https://github.com/ItsMyPassword/extension"
-        class="btn-ghost"
+        class="btn-ghost relative"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+          <rect x="3" y="6" width="14" height="12" rx="2"></rect>
+          <path d="M17 10h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"></path>
+          <path d="M7 10v8"></path>
+        </svg>
+        {t("hero_cta_install")}
+        <span class="ml-1 rounded-full border border-(--color-ink-5) px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-(--color-ink-3)">
+          {t("hero_cta_install_soon")}
+        </span>
+      </a>
+      <a
+        href="https://github.com/ItsMyPassword/extension"
+        class="text-sm font-medium tracking-tight text-(--color-ink-3) underline-offset-4 transition-colors hover:text-(--color-ink-0) hover:underline"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -136,8 +158,20 @@ const t = useT(locale);
    * the keycap depress. The mouse position is published by
    * GlobalChrome.astro on `window.__mouse`, so the grid reads from a
    * single shared source instead of registering its own listener.
+   *
+   * All heavy loops respect `prefers-reduced-motion` and pause when the
+   * hero scrolls out of view to keep idle CPU at zero.
    */
   const CONFIG = { dotSpacing: 38, dotHoverRadius: 140, streamSpeed: 60 };
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let heroOnscreen = true;
+  const heroSection = document.currentScript?.previousElementSibling as HTMLElement | null;
+  if (heroSection && "IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      heroOnscreen = entries[0]!.isIntersecting;
+    }).observe(heroSection);
+  }
 
   const mouse = window.__mouse ?? {
     x: window.innerWidth / 2,
@@ -155,8 +189,6 @@ const t = useT(locale);
       cy = 0;
     let dots: { x: number; y: number; base: number }[] = [];
 
-    // Read the active theme's dot colour from CSS — re-read on theme change
-    // so the canvas recolours without a full re-render.
     let dotColour = readDotColour();
     function readDotColour() {
       return (
@@ -208,12 +240,16 @@ const t = useT(locale);
     }
 
     function frame() {
+      if (!heroOnscreen) {
+        requestAnimationFrame(frame);
+        return;
+      }
       ctx.clearRect(0, 0, W, H);
       const hoverR = CONFIG.dotHoverRadius;
       const hoverR2 = hoverR * hoverR;
       for (const d of dots) {
         let a = d.base;
-        if (mouse.active) {
+        if (mouse.active && !reducedMotion) {
           const dx = d.x - mouse.x;
           const dy = d.y - mouse.y;
           const sq = dx * dx + dy * dy;
@@ -238,9 +274,8 @@ const t = useT(locale);
   })();
 
   (function passwordStream() {
+    if (reducedMotion) return;
     const root = document.getElementById("stream")!;
-    const seenEl = document.getElementById("seen-count")!;
-    const template = seenEl.dataset.template!;
     const ALPHABET =
       "abcdefghijkmnpqrstuvwxyz" + "ABCDEFGHJKLMNPQRSTUVWXYZ" + "23456789" + "!@#$%^&*-_+=?<>/";
 
@@ -269,17 +304,11 @@ const t = useT(locale);
 
     const ROW_H = 22;
     const HEIGHT = 168;
-    let totalGenerated = 0;
-
-    function updateCounter() {
-      seenEl.textContent = template.replace("000000", String(totalGenerated).padStart(6, "0"));
-    }
 
     function spawn() {
+      if (!heroOnscreen) return;
       const len = 18 + Math.floor(Math.random() * 18);
       const pw = pwGen(len);
-      totalGenerated++;
-      updateCounter();
 
       const row = document.createElement("div");
       row.className =
