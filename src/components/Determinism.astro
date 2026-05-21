@@ -16,10 +16,16 @@ const t = useT(locale);
  * deterministic hash) because the real Argon2id demo lives in TrySection
  * below; this section's job is purely to communicate the principle of
  * determinism in under five seconds.
+ *
+ * The card cycles through several examples on a loop so visitors who
+ * linger see the property hold for every site they recognise.
  */
-const scriptedMaster = "correct-horse-battery";
-const scriptedSite = "github.com";
-const scriptedEmail = "ada@example.com";
+const examples = [
+  { master: "correct-horse-battery", site: "github.com", email: "ada@example.com" },
+  { master: "correct-horse-battery", site: "amazon.fr", email: "ada@example.com" },
+  { master: "correct-horse-battery", site: "your-bank.com", email: "ada@example.com" },
+  { master: "correct-horse-battery", site: "netflix.com", email: "ada@example.com" },
+];
 ---
 
 <section
@@ -27,7 +33,7 @@ const scriptedEmail = "ada@example.com";
   class="relative isolate border-t border-(--color-ink-5) px-6 py-32"
 >
   <div class="mx-auto flex w-full max-w-5xl flex-col gap-14">
-    <header class="flex max-w-2xl flex-col gap-4">
+    <header data-reveal class="flex max-w-2xl flex-col gap-4">
       <span class="mono-tag">{t("determinism_tag")}</span>
       <h2
         class="m-0 text-4xl font-semibold tracking-[-0.025em] text-(--color-ink-0) sm:text-5xl"
@@ -41,10 +47,9 @@ const scriptedEmail = "ada@example.com";
 
     <div
       id="determinism-card"
+      data-reveal
       class="surface relative flex flex-col gap-6 overflow-hidden p-8 sm:p-10"
-      data-master={scriptedMaster}
-      data-site={scriptedSite}
-      data-email={scriptedEmail}
+      data-examples={JSON.stringify(examples)}
     >
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div class="flex flex-col gap-2">
@@ -107,28 +112,40 @@ const scriptedEmail = "ada@example.com";
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-3">
-        <button type="button" data-action="clear" class="btn-ghost">
-          {t("determinism_action_clear")}
-        </button>
-        <button type="button" data-action="recompute" class="btn-primary">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-4 w-4"
-            aria-hidden="true"
-          >
-            <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"></path>
-            <path d="M21 3v5h-5"></path>
-            <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"></path>
-            <path d="M3 21v-5h5"></path>
-          </svg>
-          {t("determinism_action_recompute")}
-        </button>
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" data-action="clear" class="btn-ghost">
+            {t("determinism_action_clear")}
+          </button>
+          <button type="button" data-action="recompute" class="btn-primary">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+              aria-hidden="true"
+            >
+              <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"></path>
+              <path d="M21 3v5h-5"></path>
+              <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"></path>
+              <path d="M3 21v-5h5"></path>
+            </svg>
+            {t("determinism_action_recompute")}
+          </button>
+        </div>
+        <div class="flex items-center gap-1.5" aria-hidden="true">
+          {
+            examples.map((_, i) => (
+              <span
+                data-dot={i}
+                class="block h-1.5 w-1.5 rounded-full bg-(--color-ink-5) transition-all duration-300"
+              />
+            ))
+          }
+        </div>
       </div>
 
       <p class="m-0 text-pretty text-sm leading-relaxed text-(--color-ink-3)">
@@ -153,21 +170,28 @@ const scriptedEmail = "ada@example.com";
       background: transparent;
     }
   }
+  [data-dot].is-active {
+    background: var(--color-ink-1);
+    transform: scale(1.4);
+  }
 </style>
 
 <script>
   /**
-   * Scripted demo of determinism. The fields type themselves, the
-   * derived password appears, the user can clear or recompute. The
-   * "derivation" is a tiny SHA-256 → base64 just to give a stable, real
-   * value — the real Argon2id flow lives in #try below.
+   * Scripted demo of determinism. The card cycles through several
+   * examples — types each one in, derives a stable hash, pauses, fades
+   * out, types the next one. Interacting with either button takes over
+   * and stops the cycle. The "derivation" is a tiny SHA-256 → alphabet
+   * mapping; the real Argon2id flow lives in #try below.
    */
+  type Example = { master: string; site: string; email: string };
+
   const card = document.getElementById("determinism-card") as HTMLElement | null;
   if (card !== null) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const master = card.dataset.master!;
-    const site = card.dataset.site!;
-    const email = card.dataset.email!;
+    const examples = JSON.parse(card.dataset.examples ?? "[]") as Example[];
+    let exampleIndex = 0;
+    let current: Example = examples[0] ?? { master: "", site: "", email: "" };
     const fields = {
       master: card.querySelector('[data-field="master"]') as HTMLElement,
       site: card.querySelector('[data-field="site"]') as HTMLElement,
@@ -175,13 +199,14 @@ const scriptedEmail = "ada@example.com";
       output: card.querySelector('[data-field="output"]') as HTMLElement,
       badge: card.querySelector('[data-field="badge"]') as HTMLElement,
     };
+    const dots = Array.from(card.querySelectorAll<HTMLElement>("[data-dot]"));
     const btnClear = card.querySelector('[data-action="clear"]') as HTMLButtonElement;
     const btnRecompute = card.querySelector('[data-action="recompute"]') as HTMLButtonElement;
 
     const ALPHABET =
       "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%^&*-_+=?";
-    async function derive(): Promise<string> {
-      const data = new TextEncoder().encode(`${master}|${site}|${email}`);
+    async function derive(ex: Example): Promise<string> {
+      const data = new TextEncoder().encode(`${ex.master}|${ex.site}|${ex.email}`);
       const digest = await crypto.subtle.digest("SHA-256", data);
       const bytes = new Uint8Array(digest);
       let out = "";
@@ -191,6 +216,10 @@ const scriptedEmail = "ada@example.com";
 
     function setField(el: HTMLElement, value: string) {
       el.textContent = value || "·";
+    }
+
+    function setActiveDot(i: number) {
+      dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
     }
 
     async function type(el: HTMLElement, value: string, speed = 26) {
@@ -206,63 +235,129 @@ const scriptedEmail = "ada@example.com";
     }
 
     let derived = "";
+    let cycleTimer: number | null = null;
+    let onscreen = false;
+    let userInteracted = false;
 
-    async function play(markIdentical: boolean) {
+    async function play(ex: Example, markIdentical: boolean) {
       btnClear.disabled = true;
       btnRecompute.disabled = true;
       fields.badge.classList.add("hidden");
-      fields.output.textContent = " ";
+      fields.output.textContent = " ";
+      current = ex;
+      setActiveDot(exampleIndex);
 
-      await type(fields.master, master, 24);
-      await type(fields.site, site, 30);
-      await type(fields.email, email, 22);
+      await type(fields.master, ex.master, 24);
+      await type(fields.site, ex.site, 30);
+      await type(fields.email, ex.email, 22);
 
       fields.output.textContent = reduced ? "" : "·".repeat(24);
       await new Promise((r) => setTimeout(r, reduced ? 0 : 320));
 
-      const next = await derive();
+      const next = await derive(ex);
       const isMatch = derived !== "" && next === derived;
       derived = next;
       fields.output.textContent = next;
       if (markIdentical && isMatch) {
         fields.badge.classList.remove("hidden");
-        btnRecompute.textContent = btnRecompute.dataset.again ?? btnRecompute.textContent;
       }
       btnClear.disabled = false;
       btnRecompute.disabled = false;
     }
 
-    function clear() {
+    async function fadeOutFields() {
+      if (reduced) {
+        setField(fields.master, "");
+        setField(fields.site, "");
+        setField(fields.email, "");
+        fields.output.textContent = " ";
+        fields.badge.classList.add("hidden");
+        return;
+      }
+      card.style.transition = "opacity 220ms ease-out";
+      card.style.opacity = "0.4";
+      await new Promise((r) => setTimeout(r, 240));
       setField(fields.master, "");
       setField(fields.site, "");
       setField(fields.email, "");
-      fields.output.textContent = " ";
+      fields.output.textContent = " ";
+      fields.badge.classList.add("hidden");
+      card.style.opacity = "1";
+      await new Promise((r) => setTimeout(r, 160));
+    }
+
+    async function cycle() {
+      if (userInteracted || !onscreen) return;
+      exampleIndex = (exampleIndex + 1) % examples.length;
+      derived = "";
+      await fadeOutFields();
+      if (userInteracted || !onscreen) return;
+      await play(examples[exampleIndex]!, false);
+      scheduleNext();
+    }
+
+    function scheduleNext() {
+      if (cycleTimer !== null) {
+        window.clearTimeout(cycleTimer);
+        cycleTimer = null;
+      }
+      if (userInteracted) return;
+      cycleTimer = window.setTimeout(() => void cycle(), 4200);
+    }
+
+    function clear() {
+      userInteracted = true;
+      if (cycleTimer !== null) {
+        window.clearTimeout(cycleTimer);
+        cycleTimer = null;
+      }
+      setField(fields.master, "");
+      setField(fields.site, "");
+      setField(fields.email, "");
+      fields.output.textContent = " ";
       fields.badge.classList.add("hidden");
     }
 
-    btnRecompute.dataset.again = btnRecompute.textContent?.trim() ?? "";
     btnClear.addEventListener("click", () => {
       clear();
       derived = "";
     });
-    btnRecompute.addEventListener("click", () => play(true));
+    btnRecompute.addEventListener("click", () => {
+      userInteracted = true;
+      if (cycleTimer !== null) {
+        window.clearTimeout(cycleTimer);
+        cycleTimer = null;
+      }
+      void play(current, true);
+    });
 
-    // Auto-play on first view
     if ("IntersectionObserver" in window) {
       let played = false;
       const io = new IntersectionObserver(
         (entries) => {
-          if (!played && entries[0]!.isIntersecting) {
+          onscreen = entries[0]!.isIntersecting;
+          if (!played && onscreen) {
             played = true;
-            play(false);
-            io.disconnect();
+            void (async () => {
+              await play(examples[0]!, false);
+              scheduleNext();
+            })();
+          } else if (!onscreen && cycleTimer !== null) {
+            window.clearTimeout(cycleTimer);
+            cycleTimer = null;
+          } else if (onscreen && played && !userInteracted && cycleTimer === null) {
+            scheduleNext();
           }
         },
         { threshold: 0.4 }
       );
       io.observe(card);
     } else {
-      play(false);
+      onscreen = true;
+      void (async () => {
+        await play(examples[0]!, false);
+        scheduleNext();
+      })();
     }
   }
 </script>
