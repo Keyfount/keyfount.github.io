@@ -1,13 +1,13 @@
 {
-  "name": "itsmypassword-website",
+  "name": "keyfount-website",
   "version": "0.1.0",
   "private": true,
-  "description": "Landing page for the ItsMyPassword browser extension.",
+  "description": "Landing page for the Keyfount browser extension.",
   "license": "MIT",
-  "homepage": "https://itsmypassword.github.io/",
+  "homepage": "https://keyfount.github.io/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ItsMyPassword/itsmypassword.github.io.git"
+    "url": "https://github.com/Keyfount/keyfount.github.io.git"
   },
   "type": "module",
   "engines": {
