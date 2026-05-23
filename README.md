@@ -1,6 +1,6 @@
-# ItsMyPassword — website
+# Keyfount — website
 
-> The landing page for [ItsMyPassword](https://github.com/ItsMyPassword/extension), a deterministic password manager Chrome extension.
+> The landing page for [Keyfount](https://github.com/Keyfount/extension), a deterministic password manager Chrome extension.
 
 A quiet, dark single-page site built around the **"Nothing to keep."** hero — a pulsing keycap, a silver-to-graphite headline, and a stream of crypto-random passwords that appear and dissolve without ever being stored.
 
@@ -52,7 +52,7 @@ src/
 
 ## Deployment
 
-Every push to `main` rebuilds and publishes to GitHub Pages at <https://itsmypassword.github.io/>. The repository is named `itsmypassword.github.io`, so GitHub serves it at the org's root domain without a base path.
+Every push to `main` rebuilds and publishes to GitHub Pages at <https://keyfount.github.io/>. The repository is named `keyfount.github.io`, so GitHub serves it at the org's root domain without a base path.
 
 ## Licence
 

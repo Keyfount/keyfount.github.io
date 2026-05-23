@@ -5,15 +5,15 @@ import sitemap from "@astrojs/sitemap";
 
 /**
  * The site is deployed to GitHub Pages at the root of the org's
- * github.io domain — the repository is named `itsmypassword.github.io`,
- * which GitHub serves at https://itsmypassword.github.io/ directly.
+ * github.io domain — the repository is named `keyfount.github.io`,
+ * which GitHub serves at https://keyfount.github.io/ directly.
  *
  * i18n: English is the default and lives at the root. French lives under
  * /fr/. Astro handles the routing; the t() helper in src/i18n/ picks the
  * right strings per request.
  */
 export default defineConfig({
-  site: "https://itsmypassword.github.io",
+  site: "https://keyfount.github.io",
   trailingSlash: "ignore",
   prefetch: true,
   i18n: {

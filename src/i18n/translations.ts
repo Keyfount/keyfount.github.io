@@ -25,8 +25,8 @@ interface Entry {
 
 export const STRINGS = {
   meta_title: {
-    en: "ItsMyPassword — Nothing to keep.",
-    fr: "ItsMyPassword — Rien à garder.",
+    en: "Keyfount — Nothing to keep.",
+    fr: "Keyfount — Rien à garder.",
   },
   meta_description: {
     en: "A deterministic password manager Chrome extension. No vault, no sync, no cloud — just an algorithm.",
@@ -34,7 +34,7 @@ export const STRINGS = {
   },
 
   /* corners */
-  corner_brand: { en: "itsmypassword", fr: "itsmypassword" },
+  corner_brand: { en: "keyfount", fr: "keyfount" },
 
   /* hero */
   hero_headline: { en: "Nothing to keep.", fr: "Rien à garder." },
@@ -57,8 +57,8 @@ export const STRINGS = {
   how_tag: { en: "how it works", fr: "fonctionnement" },
   how_title: { en: "A function, not a vault.", fr: "Une fonction, pas un coffre." },
   how_body: {
-    en: "ItsMyPassword doesn't keep your passwords anywhere. It recomputes them on demand from three inputs you control — same inputs in, same password out, on any device, with nothing to sync.",
-    fr: "ItsMyPassword ne stocke vos mots de passe nulle part. Il les recalcule à la demande à partir de trois entrées que vous contrôlez — mêmes entrées, même mot de passe, sur n'importe quel appareil, sans rien à synchroniser.",
+    en: "Keyfount doesn't keep your passwords anywhere. It recomputes them on demand from three inputs you control — same inputs in, same password out, on any device, with nothing to sync.",
+    fr: "Keyfount ne stocke vos mots de passe nulle part. Il les recalcule à la demande à partir de trois entrées que vous contrôlez — mêmes entrées, même mot de passe, sur n'importe quel appareil, sans rien à synchroniser.",
   },
   how_step1_title: {
     en: "You remember the master.",
@@ -89,8 +89,8 @@ export const STRINGS = {
   promise_tag: { en: "the promise", fr: "la promesse" },
   promise_title: { en: "Less to trust.", fr: "Moins à faire confiance." },
   promise_body: {
-    en: "Most password managers ask you to trust a vault, a sync service, and the encryption around both. ItsMyPassword asks you to trust a single algorithm — short enough to read in an evening.",
-    fr: "La plupart des gestionnaires demandent de faire confiance à un coffre, à un service de sync, et au chiffrement autour des deux. ItsMyPassword vous demande de faire confiance à un seul algorithme — assez court pour le lire en une soirée.",
+    en: "Most password managers ask you to trust a vault, a sync service, and the encryption around both. Keyfount asks you to trust a single algorithm — short enough to read in an evening.",
+    fr: "La plupart des gestionnaires demandent de faire confiance à un coffre, à un service de sync, et au chiffrement autour des deux. Keyfount vous demande de faire confiance à un seul algorithme — assez court pour le lire en une soirée.",
   },
   promise_no_vault: { en: "No vault", fr: "Pas de coffre" },
   promise_no_vault_body: {
@@ -131,8 +131,8 @@ export const STRINGS = {
   /* try / generator page */
   try_title: { en: "Try it here.", fr: "Essayez-le ici." },
   try_meta_title: {
-    en: "Try ItsMyPassword — Nothing to keep.",
-    fr: "Essayer ItsMyPassword — Rien à garder.",
+    en: "Try Keyfount — Nothing to keep.",
+    fr: "Essayer Keyfount — Rien à garder.",
   },
   try_body: {
     en: "Type a master password, a site and an email. The same algorithm the extension uses derives a password right in your browser — nothing is sent, nothing is stored.",
