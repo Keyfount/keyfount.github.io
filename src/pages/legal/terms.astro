@@ -2,83 +2,217 @@
 import LegalPage from "~/components/LegalPage.astro";
 ---
 
-<LegalPage locale="en" title="Terms of use" lastUpdated="2026-05-20" path="/legal/terms">
+<LegalPage locale="en" title="Terms of use" lastUpdated="2026-05-26" path="/legal/terms">
   <p>
-    Keyfount is a free, open-source browser extension and accompanying website
-    published under the MIT licence by the Keyfount maintainers (the
-    "Project"). By installing the extension or using this website (together, the
-    "Service"), you agree to these terms.
+    These Terms of Use (the "<strong>Terms</strong>") govern your access to and
+    use of the software, documentation and websites published by the Keyfount
+    Project (the "<strong>Project</strong>", "we", "us"). By installing,
+    running, accessing or otherwise using any component of the Service defined
+    below, you (the "<strong>User</strong>", "you") acknowledge that you have
+    read, understood and agreed to be bound by these Terms. If you do not
+    agree, do not install or use the Service.
   </p>
 
-  <h2>1. The Service</h2>
+  <h2>1. Definitions</h2>
+  <ul>
+    <li>
+      <strong>Project</strong> — the Keyfount Project, an open-source software
+      project maintained by the contributors listed in the public repositories
+      under <a
+        href="https://github.com/Keyfount"
+        target="_blank"
+        rel="noopener noreferrer">github.com/Keyfount</a
+      >.
+    </li>
+    <li>
+      <strong>Software</strong> — the source code and compiled artefacts
+      published by the Project, including the browser extension, the desktop
+      and mobile applications, the optional self-hostable sync server and any
+      ancillary tooling.
+    </li>
+    <li>
+      <strong>Website</strong> — the website available at
+      <code>keyfount.github.io</code> and any subdomain operated by the
+      Project, including its documentation and interactive demonstrations.
+    </li>
+    <li>
+      <strong>Service</strong> — the Software and the Website, collectively.
+    </li>
+    <li>
+      <strong>Self-Hosted Instance</strong> — any deployment of the sync
+      server software performed by a User on infrastructure under that User's
+      control. Self-Hosted Instances are operated by the User, not by the
+      Project.
+    </li>
+  </ul>
+
+  <h2>2. Licence and intellectual property</h2>
   <p>
-    The extension derives passwords on your device from inputs you provide. It
-    does not transmit those inputs, the derived passwords, or any personal data
-    to the Project or to any third party. The website is a static landing page
-    that performs the same derivation locally for demonstration purposes.
+    The Software is distributed under the terms of the
+    <strong>MIT licence</strong>. The full text of the licence is included in
+    every source repository and prevails over these Terms with respect to your
+    rights in the source code. Subject to that licence, you may use, copy,
+    modify, merge, publish, distribute, sublicense and sell copies of the
+    Software, provided that the copyright notice and the licence text are
+    preserved.
+  </p>
+  <p>
+    All trade marks, logos and graphic identity elements associated with the
+    name "Keyfount" are the property of the Project and may not be used in a
+    way that suggests endorsement of, or affiliation with, a derivative work
+    or third-party service without prior written permission.
   </p>
 
-  <h2>2. Licence</h2>
+  <h2>3. Description of the Service</h2>
   <p>
-    The source code is licensed under the MIT licence. You may use, copy,
-    modify, and redistribute it subject to the conditions of that licence. The
-    MIT licence text is included in every repository and prevails over these
-    terms in case of conflict regarding source-code rights.
+    The Service is a deterministic password manager. It derives passwords on
+    your device from inputs you control (a master password, a registrable
+    site domain, an account identifier and a per-site profile). The Service
+    does not maintain a password vault and does not transmit your master
+    password, derived passwords or account identifiers to the Project's
+    infrastructure. The Website performs the same derivation locally for
+    demonstration purposes.
   </p>
 
-  <h2>3. No warranty</h2>
+  <h2>4. No account; no authentication with the Project</h2>
   <p>
-    The Service is provided "as is", without warranty of any kind, express or
-    implied, including but not limited to the warranties of merchantability,
-    fitness for a particular purpose, and non-infringement. You alone are
-    responsible for the master password you choose, for the per-site
-    configurations you store locally, and for any consequences of using the
-    derived passwords with third-party services.
-  </p>
-
-  <h2>4. Limitation of liability</h2>
-  <p>
-    To the maximum extent permitted by applicable law, the Project and its
-    maintainers shall not be liable for any direct, indirect, incidental,
-    special, consequential, or punitive damages arising out of or in connection
-    with the Service — including but not limited to data loss, account
-    lockouts, or unauthorised access to third-party services.
+    Use of the Service does not require the creation of an account with the
+    Project. The Project does not authenticate Users, does not maintain user
+    profiles and does not process credentials on its infrastructure.
   </p>
 
   <h2>5. Acceptable use</h2>
+  <p>You agree not to:</p>
+  <ul>
+    <li>
+      use the Service to derive, recover or attempt to recover credentials
+      relating to accounts you are not lawfully authorised to access;
+    </li>
+    <li>
+      circumvent, disable, interfere with or otherwise impair the integrity,
+      security or availability of the Service or of any third-party service
+      with which the Service interacts;
+    </li>
+    <li>
+      use the Service in connection with any activity that violates
+      applicable law, including data-protection, intellectual-property,
+      export-control and anti-fraud legislation;
+    </li>
+    <li>
+      misrepresent yourself as the Project, a maintainer or a contributor,
+      or use the Project's name, logo or identity in a misleading manner.
+    </li>
+  </ul>
+
+  <h2>6. Self-hosted sync server</h2>
   <p>
-    You agree not to use the Service to derive credentials you are not
-    authorised to use, to attempt to recover credentials you do not own, or to
-    interfere with the integrity, security, or availability of the Service or
-    of any third-party service the Service interacts with.
+    The Project publishes the source code and container images of an optional
+    sync server. A User who chooses to operate a Self-Hosted Instance does so
+    on infrastructure under that User's sole responsibility. With respect to
+    such an instance, the User acts as the data controller and as the
+    operator of the service. The Project is neither a controller nor a
+    processor of any data transmitted to a Self-Hosted Instance and provides
+    no service-level commitment in respect of any such deployment.
   </p>
 
-  <h2>6. Third-party services</h2>
+  <h2>7. Third-party distribution channels</h2>
   <p>
-    The browser stores (Chrome Web Store, etc.) on which the extension is
-    distributed operate under their own terms. Your use of the extension is
-    additionally governed by the terms of the store you downloaded it from.
-    The Project is not affiliated with those stores.
+    The Software may be distributed through third-party stores (including the
+    Chrome Web Store, Mozilla Add-ons, Microsoft Edge Add-ons, Apple App
+    Store and Google Play). Your installation and use of the Software from
+    such a channel are additionally governed by that channel's own terms of
+    service. The Project is not affiliated with, sponsored by or endorsed by
+    any of these channels.
   </p>
 
-  <h2>7. Changes</h2>
+  <h2>8. Export control and cryptography</h2>
   <p>
-    The Project may update these terms from time to time. Material changes are
-    reflected by updating the "Last updated" date above. Continued use of the
-    Service after such an update constitutes acceptance of the revised terms.
+    The Software incorporates standard cryptographic primitives (notably
+    Argon2id and the Web Crypto API). You are responsible for ensuring that
+    your use, import, export and re-export of the Software complies with the
+    laws and regulations applicable in your jurisdiction.
   </p>
 
-  <h2>8. Governing law</h2>
+  <h2>9. No warranty</h2>
   <p>
-    These terms are governed by French law. Any dispute arising out of or in
-    connection with the Service that cannot be resolved amicably shall be
-    submitted to the competent courts of Paris, France.
+    The Service is provided "<strong>as is</strong>" and "<strong>as
+    available</strong>", without warranty of any kind, whether express,
+    implied or statutory, including but not limited to the warranties of
+    merchantability, fitness for a particular purpose, accuracy,
+    non-infringement and uninterrupted availability. You alone are
+    responsible for the master password you choose, for the per-site
+    configurations you store locally and for any consequences of using the
+    derived passwords with third-party services.
   </p>
 
-  <h2>9. Contact</h2>
+  <h2>10. Limitation of liability</h2>
   <p>
-    For any question regarding these terms, open an issue on the project
-    repository at <a
+    To the maximum extent permitted by applicable law, the Project, its
+    maintainers and its contributors shall not be liable for any direct,
+    indirect, incidental, special, consequential, exemplary or punitive
+    damages — including, without limitation, loss of data, loss of profits,
+    business interruption, account lockouts, identity theft or unauthorised
+    access to third-party services — arising out of or in connection with
+    the Service, whether based in contract, tort (including negligence),
+    strict liability or any other legal theory, even if the Project has been
+    advised of the possibility of such damages.
+  </p>
+
+  <h2>11. Suspension and termination</h2>
+  <p>
+    You may discontinue your use of the Service at any time by uninstalling
+    the Software and ceasing to access the Website. The Project may, at any
+    time and without prior notice, discontinue all or part of the Service,
+    publish breaking changes or remove releases from distribution channels.
+    Nothing in these Terms creates a perpetual right to a specific version
+    or feature of the Service.
+  </p>
+
+  <h2>12. Modifications to the Terms</h2>
+  <p>
+    The Project may revise these Terms from time to time. The "Last updated"
+    date above reflects the most recent material change. Continued use of
+    the Service after the publication of revised Terms constitutes
+    acceptance of the revised Terms. If you do not accept the revised Terms,
+    you must cease using the Service.
+  </p>
+
+  <h2>13. Severability and waiver</h2>
+  <p>
+    If any provision of these Terms is held to be invalid, illegal or
+    unenforceable, the remaining provisions shall remain in full force and
+    effect. The failure of the Project to enforce any right or provision of
+    these Terms shall not constitute a waiver of that right or provision.
+  </p>
+
+  <h2>14. Entire agreement</h2>
+  <p>
+    These Terms, together with the MIT licence applicable to the Software
+    and the Privacy Policy and Security &amp; Disclosure pages incorporated
+    herein by reference, constitute the entire agreement between you and the
+    Project relating to your use of the Service and supersede any prior
+    agreement on the same subject matter.
+  </p>
+
+  <h2>15. Governing law and jurisdiction</h2>
+  <p>
+    These Terms are governed by and construed in accordance with the laws of
+    <strong>France</strong>, without regard to its conflict-of-laws
+    provisions. Any dispute arising out of or in connection with the Service
+    that cannot be resolved amicably shall be submitted to the exclusive
+    jurisdiction of the competent courts of <strong>Paris, France</strong>,
+    subject to any mandatory consumer-protection rules of your country of
+    residence.
+  </p>
+
+  <h2>16. Contact</h2>
+  <p>
+    Questions regarding these Terms may be addressed to
+    <a href="mailto:legal-keyfount@loule.me">legal-keyfount@loule.me</a>.
+    General correspondence may be sent to
+    <a href="mailto:contact-keyfount@loule.me">contact-keyfount@loule.me</a>
+    or filed as a public issue at
+    <a
       href="https://github.com/Keyfount"
       target="_blank"
       rel="noopener noreferrer">github.com/Keyfount</a

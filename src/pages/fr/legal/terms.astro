@@ -2,91 +2,237 @@
 import LegalPage from "~/components/LegalPage.astro";
 ---
 
-<LegalPage locale="fr" title="Conditions d'utilisation" lastUpdated="2026-05-20" path="/legal/terms">
+<LegalPage locale="fr" title="Conditions d'utilisation" lastUpdated="2026-05-26" path="/legal/terms">
   <p>
-    Keyfount est une extension de navigateur et un site web open source,
-    gratuits, publiés sous licence MIT par les mainteneurs Keyfount (le
-    « Projet »). En installant l'extension ou en utilisant ce site web
-    (ensemble, le « Service »), vous acceptez les présentes conditions.
+    Les présentes Conditions d'utilisation (les « <strong>Conditions</strong> »)
+    régissent votre accès et votre utilisation des logiciels, de la
+    documentation et des sites web publiés par le Projet Keyfount (le
+    « <strong>Projet</strong> », « nous »). En installant, en exécutant, en
+    accédant ou en utilisant de quelque manière que ce soit l'un des
+    composants du Service défini ci-dessous, vous (l'« <strong>Utilisateur</strong> »,
+    « vous ») reconnaissez avoir lu, compris et accepté d'être lié par les
+    présentes Conditions. Si vous ne les acceptez pas, n'installez pas et
+    n'utilisez pas le Service.
   </p>
 
-  <h2>1. Le Service</h2>
+  <h2>1. Définitions</h2>
+  <ul>
+    <li>
+      <strong>Projet</strong> — le Projet Keyfount, un projet logiciel
+      open source maintenu par les contributeurs listés dans les dépôts
+      publics à l'adresse <a
+        href="https://github.com/Keyfount"
+        target="_blank"
+        rel="noopener noreferrer">github.com/Keyfount</a
+      >.
+    </li>
+    <li>
+      <strong>Logiciel</strong> — le code source et les artefacts compilés
+      publiés par le Projet, incluant l'extension de navigateur, les
+      applications de bureau et mobiles, le serveur de synchronisation
+      auto-hébergeable optionnel ainsi que tout outillage annexe.
+    </li>
+    <li>
+      <strong>Site</strong> — le site web disponible à l'adresse
+      <code>keyfount.github.io</code> et tout sous-domaine exploité par le
+      Projet, incluant sa documentation et ses démonstrations interactives.
+    </li>
+    <li>
+      <strong>Service</strong> — le Logiciel et le Site, pris ensemble.
+    </li>
+    <li>
+      <strong>Instance Auto-hébergée</strong> — tout déploiement du logiciel
+      serveur de synchronisation effectué par un Utilisateur sur une
+      infrastructure placée sous le contrôle de cet Utilisateur. Les
+      Instances Auto-hébergées sont exploitées par l'Utilisateur et non par
+      le Projet.
+    </li>
+  </ul>
+
+  <h2>2. Licence et propriété intellectuelle</h2>
   <p>
-    L'extension dérive des mots de passe sur votre appareil à partir des
-    entrées que vous fournissez. Elle ne transmet ni ces entrées, ni les mots
-    de passe dérivés, ni aucune donnée personnelle au Projet ni à un tiers.
-    Le site web est une page statique qui réalise la même dérivation
-    localement à des fins de démonstration.
+    Le Logiciel est distribué sous les termes de la
+    <strong>licence MIT</strong>. Le texte intégral de cette licence est
+    inclus dans chaque dépôt source et prévaut sur les présentes Conditions
+    s'agissant de vos droits sur le code source. Sous réserve de cette
+    licence, vous pouvez utiliser, copier, modifier, fusionner, publier,
+    distribuer, sous-licencier et vendre des copies du Logiciel, à
+    condition que la mention de copyright et le texte de la licence soient
+    préservés.
+  </p>
+  <p>
+    L'ensemble des marques, logos et éléments d'identité graphique associés
+    à la dénomination « Keyfount » sont la propriété du Projet et ne
+    peuvent être utilisés d'une manière laissant penser à une caution ou à
+    une affiliation à une œuvre dérivée ou à un service tiers sans
+    autorisation écrite préalable.
   </p>
 
-  <h2>2. Licence</h2>
+  <h2>3. Description du Service</h2>
   <p>
-    Le code source est publié sous licence MIT. Vous pouvez l'utiliser, le
-    copier, le modifier et le redistribuer dans les conditions de cette
-    licence. Le texte de la licence MIT est inclus dans chaque dépôt et
-    prévaut sur les présentes conditions en cas de conflit relatif aux
-    droits sur le code source.
+    Le Service est un gestionnaire de mots de passe déterministe. Il dérive
+    des mots de passe sur votre appareil à partir d'entrées que vous
+    contrôlez (un mot de passe maître, un domaine racine de site, un
+    identifiant de compte et un profil propre à chaque site). Le Service ne
+    maintient pas de coffre-fort de mots de passe et ne transmet ni votre
+    mot de passe maître, ni les mots de passe dérivés, ni les identifiants
+    de compte vers l'infrastructure du Projet. Le Site effectue la même
+    dérivation localement à des fins de démonstration.
   </p>
 
-  <h2>3. Absence de garantie</h2>
+  <h2>4. Absence de compte ; absence d'authentification auprès du Projet</h2>
   <p>
-    Le Service est fourni « tel quel », sans garantie d'aucune sorte,
-    expresse ou implicite, y compris notamment les garanties de qualité
-    marchande, d'adéquation à un usage particulier et d'absence de
-    contrefaçon. Vous êtes seul responsable du mot de passe maître que vous
-    choisissez, des configurations par site que vous stockez localement et
-    de toute conséquence de l'utilisation des mots de passe dérivés avec
-    des services tiers.
-  </p>
-
-  <h2>4. Limitation de responsabilité</h2>
-  <p>
-    Dans la mesure maximale permise par la loi applicable, le Projet et ses
-    mainteneurs ne pourront être tenus responsables d'aucun dommage direct,
-    indirect, accessoire, spécial, consécutif ou punitif résultant de ou en
-    lien avec le Service — y compris, sans s'y limiter, la perte de
-    données, le verrouillage de comptes ou l'accès non autorisé à des
-    services tiers.
+    L'utilisation du Service ne requiert pas la création d'un compte auprès
+    du Projet. Le Projet n'authentifie pas les Utilisateurs, ne maintient
+    pas de profils utilisateur et ne traite aucun identifiant sur son
+    infrastructure.
   </p>
 
   <h2>5. Usage acceptable</h2>
+  <p>Vous vous engagez à ne pas :</p>
+  <ul>
+    <li>
+      utiliser le Service pour dériver, récupérer ou tenter de récupérer
+      des identifiants relatifs à des comptes auxquels vous n'êtes pas
+      légalement autorisé à accéder ;
+    </li>
+    <li>
+      contourner, désactiver, perturber ou autrement porter atteinte à
+      l'intégrité, à la sécurité ou à la disponibilité du Service ou de
+      tout service tiers avec lequel le Service interagit ;
+    </li>
+    <li>
+      utiliser le Service en lien avec toute activité contrevenant à la loi
+      applicable, notamment en matière de protection des données, de
+      propriété intellectuelle, de contrôle des exportations et de lutte
+      contre la fraude ;
+    </li>
+    <li>
+      vous faire passer pour le Projet, un mainteneur ou un contributeur,
+      ou utiliser le nom, le logo ou l'identité du Projet de manière
+      trompeuse.
+    </li>
+  </ul>
+
+  <h2>6. Serveur de synchronisation auto-hébergé</h2>
   <p>
-    Vous vous engagez à ne pas utiliser le Service pour dériver des
-    identifiants que vous n'êtes pas autorisé à utiliser, à tenter de
-    récupérer des identifiants ne vous appartenant pas, ni à porter
-    atteinte à l'intégrité, la sécurité ou la disponibilité du Service ou
-    de tout service tiers avec lequel il interagit.
+    Le Projet publie le code source et les images conteneur d'un serveur de
+    synchronisation optionnel. L'Utilisateur qui choisit d'exploiter une
+    Instance Auto-hébergée le fait sur une infrastructure placée sous sa
+    seule responsabilité. À l'égard d'une telle instance, l'Utilisateur
+    agit en qualité de responsable du traitement et d'exploitant du
+    service. Le Projet n'est ni responsable de traitement, ni
+    sous-traitant des données transmises à une Instance Auto-hébergée et
+    ne souscrit aucun engagement de niveau de service à l'égard d'un tel
+    déploiement.
   </p>
 
-  <h2>6. Services tiers</h2>
+  <h2>7. Canaux de distribution tiers</h2>
   <p>
-    Les magasins d'extensions (Chrome Web Store, etc.) sur lesquels
-    l'extension est distribuée appliquent leurs propres conditions. Votre
-    utilisation de l'extension est également régie par les conditions du
-    magasin depuis lequel vous l'avez téléchargée. Le Projet n'est affilié
-    à aucun de ces magasins.
+    Le Logiciel peut être distribué via des magasins tiers (notamment
+    Chrome Web Store, Mozilla Add-ons, Microsoft Edge Add-ons, Apple App
+    Store et Google Play). Votre installation et votre utilisation du
+    Logiciel depuis l'un de ces canaux sont également régies par les
+    conditions propres à ce canal. Le Projet n'est ni affilié à, ni
+    sponsorisé par, ni cautionné par ces canaux.
   </p>
 
-  <h2>7. Modifications</h2>
+  <h2>8. Contrôle des exportations et cryptographie</h2>
   <p>
-    Le Projet peut mettre à jour ces conditions occasionnellement. Toute
-    modification substantielle est reflétée par la mise à jour de la date
-    « Dernière mise à jour » ci-dessus. L'utilisation continue du Service
-    après une telle mise à jour vaut acceptation des conditions révisées.
+    Le Logiciel intègre des primitives cryptographiques standard
+    (notamment Argon2id et l'API Web Crypto). Il vous appartient de vous
+    assurer que votre utilisation, importation, exportation et
+    réexportation du Logiciel sont conformes aux lois et règlements
+    applicables dans votre juridiction.
   </p>
 
-  <h2>8. Droit applicable</h2>
+  <h2>9. Absence de garantie</h2>
   <p>
-    Les présentes conditions sont régies par le droit français. Tout
-    différend résultant de ou en lien avec le Service qui ne pourrait être
-    résolu à l'amiable sera soumis aux tribunaux compétents de Paris,
-    France.
+    Le Service est fourni « <strong>en l'état</strong> » et « <strong>tel
+    que disponible</strong> », sans garantie d'aucune sorte, expresse,
+    implicite ou légale, y compris, sans s'y limiter, les garanties de
+    qualité marchande, d'adéquation à un usage particulier, d'exactitude,
+    d'absence de contrefaçon et de disponibilité ininterrompue. Vous êtes
+    seul responsable du mot de passe maître que vous choisissez, des
+    configurations par site que vous stockez localement et de toute
+    conséquence de l'utilisation des mots de passe dérivés avec des
+    services tiers.
   </p>
 
-  <h2>9. Contact</h2>
+  <h2>10. Limitation de responsabilité</h2>
   <p>
-    Pour toute question concernant ces conditions, ouvrez un ticket sur le
-    dépôt du projet : <a
+    Dans la mesure maximale permise par la loi applicable, le Projet, ses
+    mainteneurs et ses contributeurs ne pourront être tenus responsables
+    d'aucun dommage direct, indirect, accessoire, spécial, consécutif,
+    exemplaire ou punitif — y compris, sans s'y limiter, la perte de
+    données, la perte de bénéfices, l'interruption d'activité, le
+    verrouillage de comptes, l'usurpation d'identité ou l'accès non
+    autorisé à des services tiers — résultant de ou en lien avec le
+    Service, qu'il s'agisse d'une responsabilité contractuelle,
+    délictuelle (y compris la négligence), de plein droit ou de toute
+    autre théorie juridique, même si le Projet a été informé de la
+    possibilité de tels dommages.
+  </p>
+
+  <h2>11. Suspension et résiliation</h2>
+  <p>
+    Vous pouvez cesser d'utiliser le Service à tout moment en
+    désinstallant le Logiciel et en n'accédant plus au Site. Le Projet
+    peut, à tout moment et sans préavis, interrompre tout ou partie du
+    Service, publier des modifications non rétro-compatibles ou retirer
+    des versions des canaux de distribution. Aucune disposition des
+    présentes Conditions ne crée de droit perpétuel à une version ou à une
+    fonctionnalité spécifique du Service.
+  </p>
+
+  <h2>12. Modifications des Conditions</h2>
+  <p>
+    Le Projet peut réviser les présentes Conditions occasionnellement. La
+    date « Dernière mise à jour » ci-dessus reflète la modification
+    substantielle la plus récente. L'utilisation continue du Service
+    postérieurement à la publication de Conditions révisées vaut
+    acceptation de celles-ci. Si vous n'acceptez pas les Conditions
+    révisées, vous devez cesser d'utiliser le Service.
+  </p>
+
+  <h2>13. Divisibilité et renonciation</h2>
+  <p>
+    Si une stipulation des présentes Conditions est jugée invalide,
+    illégale ou inopposable, les stipulations restantes demeurent
+    pleinement en vigueur. Le fait pour le Projet de ne pas faire valoir
+    un droit ou une stipulation des présentes Conditions ne saurait
+    constituer une renonciation à ce droit ou à cette stipulation.
+  </p>
+
+  <h2>14. Intégralité de l'accord</h2>
+  <p>
+    Les présentes Conditions, ensemble avec la licence MIT applicable au
+    Logiciel ainsi que les pages Politique de confidentialité et Sécurité
+    &amp; divulgation incorporées par référence, constituent l'intégralité
+    de l'accord entre vous et le Projet relatif à votre utilisation du
+    Service et remplacent tout accord antérieur portant sur le même objet.
+  </p>
+
+  <h2>15. Droit applicable et juridiction</h2>
+  <p>
+    Les présentes Conditions sont régies par et interprétées conformément
+    au <strong>droit français</strong>, sans considération de ses règles
+    de conflit de lois. Tout différend résultant de ou en lien avec le
+    Service qui ne pourrait être résolu à l'amiable sera soumis à la
+    compétence exclusive des tribunaux de <strong>Paris, France</strong>,
+    sous réserve des règles impératives de protection des consommateurs
+    de votre pays de résidence.
+  </p>
+
+  <h2>16. Contact</h2>
+  <p>
+    Les questions relatives aux présentes Conditions peuvent être
+    adressées à
+    <a href="mailto:legal-keyfount@loule.me">legal-keyfount@loule.me</a>.
+    La correspondance générale peut être envoyée à
+    <a href="mailto:contact-keyfount@loule.me">contact-keyfount@loule.me</a>
+    ou déposée publiquement sous forme de ticket à l'adresse
+    <a
       href="https://github.com/Keyfount"
       target="_blank"
       rel="noopener noreferrer">github.com/Keyfount</a
