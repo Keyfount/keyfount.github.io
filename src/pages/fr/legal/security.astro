@@ -2,106 +2,236 @@
 import LegalPage from "~/components/LegalPage.astro";
 ---
 
-<LegalPage locale="fr" title="Sécurité & divulgation" lastUpdated="2026-05-20" path="/legal/security">
+<LegalPage locale="fr" title="Sécurité & divulgation" lastUpdated="2026-05-26" path="/legal/security">
   <p>
-    Keyfount est un outil sensible à la sécurité. Cette page résume le
-    modèle de menace pour lequel l'extension est conçue et la procédure
-    pour signaler une vulnérabilité.
+    Keyfount est un outil sensible à la sécurité. Cette page décrit le
+    modèle de menace pour lequel le Service est conçu, la construction
+    cryptographique sur laquelle il repose, la procédure de
+    divulgation coordonnée pour signaler une vulnérabilité ainsi que
+    les garanties d'intégrité attachées aux versions publiées.
   </p>
 
-  <h2>Modèle de menace</h2>
+  <h2>1. Périmètre</h2>
   <p>
-    L'extension est conçue pour vous protéger contre les menaces suivantes :
+    La présente politique couvre l'ensemble des composants publiés par
+    le Projet Keyfount : l'extension de navigateur, l'application de
+    bureau (macOS, Windows, Linux), les applications mobiles (iOS,
+    Android), le site <code>keyfount.github.io</code> et le serveur de
+    synchronisation auto-hébergeable optionnel.
   </p>
+
+  <h2>2. Modèle de menace — ce contre quoi le Service protège</h2>
   <ul>
     <li>
-      <strong>Fuites de coffre.</strong> Il n'y a pas de coffre. Les mots
-      de passe dérivés sont calculés à la demande et jamais stockés.
+      <strong>Fuites de coffre.</strong> Il n'y a pas de coffre. Les
+      mots de passe dérivés sont calculés à la demande et jamais
+      persistés.
     </li>
     <li>
       <strong>Compromission d'un service de synchronisation.</strong>
-      L'extension ne synchronise rien vers un service distant. Les données
-      locales restent sur l'appareil.
+      Par défaut, le Service ne réalise aucune synchronisation. Lorsque
+      le serveur de synchronisation auto-hébergé optionnel est utilisé,
+      l'authentification s'appuie sur
+      <a
+        href="https://datatracker.ietf.org/doc/rfc9807/"
+        target="_blank"
+        rel="noopener noreferrer">OPAQUE (RFC 9807)</a
+      > et toutes les valeurs stockées sont des cryptogrammes opaques :
+      un vidage complet de la base de données ne révèle rien qu'un
+      attaquant puisse utiliser pour récupérer le maître hors ligne.
     </li>
     <li>
-      <strong>Observateurs réseau.</strong> L'extension n'effectue aucun
-      appel réseau.
+      <strong>Observateurs réseau.</strong> L'extension de navigateur et
+      les applications de bureau et mobiles n'effectuent aucun appel
+      réseau sortant par défaut. Le site n'effectue aucune requête
+      après le chargement initial de la page.
     </li>
     <li>
-      <strong>Mots de passe réutilisés entre sites.</strong> Les mots de
-      passe dérivés sont uniques par site par construction ; une fuite
-      sur un site ne peut donc pas être rejouée sur un autre.
-    </li>
-  </ul>
-  <p>
-    L'extension <strong>ne</strong> protège <strong>pas</strong> contre :
-  </p>
-  <ul>
-    <li>
-      Un appareil compromis — un keylogger ou un logiciel malveillant
-      s'exécutant avec vos droits utilisateur peut lire votre mot de
-      passe maître pendant que vous le tapez.
+      <strong>Réutilisation de mots de passe entre sites.</strong> Les
+      mots de passe dérivés sont uniques par site par construction ;
+      une fuite sur un site ne peut pas être rejouée sur un autre.
     </li>
     <li>
-      Un mot de passe maître faible — un attaquant par force brute qui
-      récupère un mot de passe dérivé sur un site fuité et connaît les
-      entrées email/domaine peut tenter de récupérer le maître hors
-      ligne. Argon2id élève considérablement le coût, mais un maître
-      court ou commun reste récupérable.
-    </li>
-    <li>
-      Le phishing — l'extension remplit les mots de passe sur l'onglet
-      actif, y compris sur des domaines similaires. Vérifiez la barre
-      d'URL avant de remplir.
+      <strong>Compromission serveur d'un déploiement de synchronisation
+      auto-hébergé.</strong> Même un attaquant disposant d'un accès
+      complet en lecture/écriture à la base de données ne peut
+      apprendre ni le mot de passe maître, ni les domaines des sites,
+      ni les identifiants de compte, ni les profils de dérivation, qui
+      sont chiffrés côté client avant transmission.
     </li>
   </ul>
 
-  <h2>Cryptographie</h2>
+  <h2>3. Ce contre quoi le Service <em>ne</em> protège <em>pas</em></h2>
+  <ul>
+    <li>
+      <strong>Un appareil compromis.</strong> Un keylogger ou un
+      logiciel malveillant s'exécutant avec vos droits utilisateur peut
+      lire votre mot de passe maître pendant que vous le tapez.
+      Maintenez votre système d'exploitation, votre navigateur et vos
+      correctifs de sécurité à jour.
+    </li>
+    <li>
+      <strong>Un mot de passe maître faible.</strong> Un attaquant qui
+      récupère un mot de passe dérivé sur un site fuité et qui connaît
+      déjà l'email et le domaine utilisés sur ce site peut tenter de
+      récupérer le maître hors ligne. Argon2id élève considérablement
+      le coût, mais un maître court ou commun reste récupérable.
+      Choisissez un mot de passe maître long, unique et non dérivé
+      d'informations publiques vous concernant.
+    </li>
+    <li>
+      <strong>Le phishing.</strong> L'extension remplit le champ de
+      mot de passe de l'onglet actif, y compris sur des domaines
+      similaires. Vérifiez la barre d'URL avant de remplir.
+    </li>
+    <li>
+      <strong>L'observation par-dessus l'épaule et l'accès physique.</strong>
+      Le Service propose une minuterie de verrouillage automatique et
+      un indice chiffré optionnel, mais il ne peut se défendre contre
+      un attaquant disposant d'un accès physique prolongé à un
+      appareil déverrouillé.
+    </li>
+    <li>
+      <strong>La compromission de l'exploitant d'un déploiement
+      auto-hébergé.</strong> La confidentialité des métadonnées
+      synchronisées face à un exploitant malveillant dépend de
+      l'intégrité du client au moment de son exécution. N'utilisez
+      que des builds clients en lesquels vous avez confiance.
+    </li>
+  </ul>
+
+  <h2>4. Construction cryptographique</h2>
   <p>
-    La dérivation utilise <a
+    La dérivation des mots de passe utilise
+    <a
       href="https://datatracker.ietf.org/doc/html/rfc9106"
       target="_blank"
       rel="noopener noreferrer">Argon2id (RFC 9106)</a
     >, la fonction mémoire-intensive recommandée par l'OWASP pour le
-    hachage de mots de passe. Paramètres : 3 itérations, 64 Mio de
-    mémoire, parallélisme 1, sortie de 32 octets. Le sel est construit à
-    partir du domaine racine du site, de l'email utilisé sur ce site et
-    d'un compteur par site. La sortie est ensuite mise en forme pour
-    correspondre au profil du site.
+    hachage de mots de passe. Paramètres : <strong>3 itérations</strong>,
+    <strong>64 Mio de mémoire</strong>, <strong>parallélisme 1</strong>,
+    <strong>sortie de 32 octets</strong>. Le sel est construit à partir
+    du domaine racine du site, de l'identifiant de compte utilisé sur
+    ce site et d'un compteur par site. La sortie est mise en forme pour
+    correspondre au profil propre au site.
+  </p>
+  <p>
+    Les secrets locaux stockés au repos (l'indice optionnel chiffré du
+    mot de passe maître et, le cas échéant, l'index local des comptes)
+    sont chiffrés par AES-256-GCM avec une clé d'enveloppement dérivée
+    de votre mot de passe maître via PBKDF2-SHA-256. L'authentification
+    auprès du serveur de synchronisation auto-hébergé optionnel utilise
+    OPAQUE, un protocole asymétrique d'échange de clés authentifié par
+    mot de passe.
   </p>
 
-  <h2>Signaler une vulnérabilité</h2>
-  <p>
-    Si vous pensez avoir trouvé une vulnérabilité de sécurité dans
-    l'extension, le site ou la construction cryptographique, signalez-la
-    en privé plutôt que d'ouvrir un ticket public.
-  </p>
+  <h2>5. Intégrité des versions</h2>
   <ul>
     <li>
-      Utilisez le signalement privé de vulnérabilité de GitHub : <a
-        href="https://github.com/Keyfount/extension/security/advisories/new"
-        target="_blank"
-        rel="noopener noreferrer">github.com/Keyfount/extension/security/advisories/new</a
-      >.
+      <strong>Versions taguées.</strong> Chaque version publiée
+      correspond à un tag Git dans le dépôt public.
     </li>
     <li>
-      Incluez une description claire, les étapes de reproduction et la
-      version concernée (visible dans le panneau « À propos » de
-      l'extension).
+      <strong>Builds reproductibles.</strong> Le bundle publié sur
+      chaque canal de distribution est construit à partir du tag
+      correspondant. Vous pouvez faire un checkout du tag, lancer la
+      commande de build documentée et comparer le bundle résultant à
+      celui publié par le canal.
     </li>
     <li>
-      Nous accusons réception des nouveaux signalements sous 7 jours et
-      visons un correctif sous 90 jours après confirmation. La
-      divulgation coordonnée est appréciée.
+      <strong>Images conteneur signées.</strong> Les images conteneur
+      du serveur sont publiées sur le GitHub Container Registry depuis
+      la CI automatisée du Projet ; l'empreinte de l'image est
+      reproductible à partir des sources publiées.
     </li>
   </ul>
 
-  <h2>Builds reproductibles</h2>
+  <h2>6. Signaler une vulnérabilité</h2>
   <p>
-    Les versions de l'extension sont taguées dans le dépôt, et le bundle
-    publié sur le Chrome Web Store est construit à partir du tag
-    correspondant. Pour vérifier une version vous-même, faites un checkout
-    du tag, lancez la commande de build documentée et comparez le bundle
-    résultant à celui publié par le store.
+    Si vous pensez avoir trouvé une vulnérabilité de sécurité dans
+    l'un des composants du Projet, sur le site, dans la construction
+    cryptographique ou dans le pipeline de build, signalez-la
+    <strong>en privé</strong> plutôt que d'ouvrir un ticket public.
+  </p>
+  <ul>
+    <li>
+      <strong>Canal recommandé.</strong> Signalement privé de
+      vulnérabilité de GitHub :
+      <a
+        href="https://github.com/Keyfount/extension/security/advisories/new"
+        target="_blank"
+        rel="noopener noreferrer">github.com/Keyfount/extension/security/advisories/new</a
+      >, ou la page d'advisory équivalente sur tout autre dépôt
+      Keyfount.
+    </li>
+    <li>
+      <strong>Canal alternatif.</strong> Email à
+      <a href="mailto:security-keyfount@loule.me">security-keyfount@loule.me</a>.
+    </li>
+    <li>
+      <strong>Éléments à fournir.</strong> Une description claire du
+      problème, les étapes de reproduction, la version concernée
+      (visible dans le panneau « À propos » de l'application), une
+      évaluation de l'impact et toute mesure d'atténuation suggérée.
+    </li>
+  </ul>
+
+  <h2>7. Nos engagements</h2>
+  <ul>
+    <li>
+      Nous accusons réception des nouveaux signalements sous
+      <strong>72 heures</strong>.
+    </li>
+    <li>
+      Nous fournissons un premier tri et une évaluation de criticité
+      sous <strong>7 jours</strong>.
+    </li>
+    <li>
+      Nous visons un correctif sous <strong>90 jours</strong> après
+      confirmation, avec un objectif plus court pour les vulnérabilités
+      critiques.
+    </li>
+    <li>
+      Nous coordonnons la divulgation avec le rapporteur et le
+      créditons dans les notes de version et l'advisory de sécurité,
+      sauf s'il préfère rester anonyme.
+    </li>
+    <li>
+      Nous n'engagerons aucune action en justice à l'encontre des
+      chercheurs en sécurité de bonne foi qui suivent la présente
+      procédure de divulgation coordonnée et qui n'accèdent à, ne
+      modifient ni ne détruisent les données d'autres utilisateurs.
+    </li>
+  </ul>
+
+  <h2>8. Hors périmètre</h2>
+  <ul>
+    <li>
+      Les constats qui requièrent un appareil déjà compromis, des
+      privilèges root ou administrateur, ou une extension de navigateur
+      malveillante exécutée en parallèle du Service.
+    </li>
+    <li>
+      Les signalements qui se limitent à la sortie d'un scanner
+      automatisé sans impact de sécurité démontré.
+    </li>
+    <li>
+      Les vulnérabilités de services tiers (magasins de navigateurs,
+      hébergeurs, dépendances maintenues par d'autres projets) —
+      veuillez les signaler au mainteneur concerné.
+    </li>
+    <li>
+      La posture de sécurité d'un déploiement de serveur de
+      synchronisation auto-hébergé, qui relève de la responsabilité de
+      son exploitant.
+    </li>
+  </ul>
+
+  <h2>9. Advisories publiques</h2>
+  <p>
+    Les vulnérabilités confirmées sont documentées dans les GitHub
+    Security Advisories du dépôt concerné, avec un CVE attribué le cas
+    échéant. Abonnez-vous aux releases du dépôt pour être notifié des
+    nouvelles advisories.
   </p>
 </LegalPage>

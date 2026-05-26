@@ -2,98 +2,224 @@
 import LegalPage from "~/components/LegalPage.astro";
 ---
 
-<LegalPage locale="en" title="Security & disclosure" lastUpdated="2026-05-20" path="/legal/security">
+<LegalPage locale="en" title="Security & disclosure" lastUpdated="2026-05-26" path="/legal/security">
   <p>
-    Keyfount is a security-sensitive tool. This page summarises the
-    threat model the extension is designed for and how to report a
-    vulnerability.
+    Keyfount is a security-sensitive tool. This page describes the threat
+    model the Service is designed for, the cryptographic construction it
+    relies on, the coordinated-disclosure process for reporting a
+    vulnerability and the integrity guarantees attached to published
+    releases.
   </p>
 
-  <h2>Threat model</h2>
+  <h2>1. Scope</h2>
   <p>
-    The extension is designed to protect against the following threats:
+    This policy covers every component published under the Keyfount
+    Project: the browser extension, the desktop application
+    (macOS, Windows, Linux), the mobile applications (iOS, Android), the
+    website at <code>keyfount.github.io</code> and the optional
+    self-hostable sync server.
   </p>
+
+  <h2>2. Threat model — what the Service protects against</h2>
   <ul>
     <li>
-      <strong>Vault leaks.</strong> There is no vault. Derived passwords are
-      computed on demand and never stored.
+      <strong>Vault leaks.</strong> There is no vault. Derived passwords
+      are computed on demand and never persisted.
     </li>
     <li>
-      <strong>Sync-service compromise.</strong> The extension never syncs
-      anything to a remote service. Local data stays on the device.
+      <strong>Sync-service compromise.</strong> By default the Service
+      performs no synchronisation. When the optional self-hosted sync
+      server is used, authentication relies on
+      <a
+        href="https://datatracker.ietf.org/doc/rfc9807/"
+        target="_blank"
+        rel="noopener noreferrer">OPAQUE (RFC 9807)</a
+      > and all stored values are opaque ciphertexts: a complete database
+      dump leaks nothing that an attacker can use to recover the master
+      offline.
     </li>
     <li>
-      <strong>Network observers.</strong> The extension performs zero network
-      calls.
+      <strong>Network observers.</strong> The browser extension and the
+      desktop and mobile applications perform no outbound network call
+      by default. The website performs no request after the initial page
+      load.
     </li>
     <li>
-      <strong>Reused per-site passwords.</strong> Derived passwords are
-      unique per site by construction, so a leak from one site cannot be
+      <strong>Password reuse across sites.</strong> Derived passwords are
+      unique per site by construction; a leak from one site cannot be
       replayed against another.
     </li>
-  </ul>
-  <p>
-    The extension does <strong>not</strong> protect against:
-  </p>
-  <ul>
     <li>
-      A compromised device — a keylogger or malware running with your user
-      rights can read your master password while you type it.
-    </li>
-    <li>
-      A weak master password — a brute-force attacker who recovers a derived
-      password from a breached site and knows the email/domain inputs can
-      attempt to recover the master offline. Argon2id raises the cost
-      substantially, but a short or common master is still recoverable.
-    </li>
-    <li>
-      Phishing — the extension fills passwords on the active tab, including
-      look-alike domains. Confirm the URL bar before filling.
+      <strong>Server compromise of a self-hosted sync deployment.</strong>
+      Even an attacker with full read/write access to the database
+      cannot learn the master password, the site domains, the account
+      identifiers or the derivation profiles, which are encrypted
+      client-side before transmission.
     </li>
   </ul>
 
-  <h2>Cryptography</h2>
+  <h2>3. What the Service does <em>not</em> protect against</h2>
+  <ul>
+    <li>
+      <strong>A compromised device.</strong> A keylogger or malware
+      running with your user rights can read your master password while
+      you type it. Keep your operating system, browser and security
+      patches up to date.
+    </li>
+    <li>
+      <strong>A weak master password.</strong> An attacker who recovers a
+      derived password from a breached site, and who already knows the
+      email and the domain used at that site, can attempt to recover
+      the master offline. Argon2id raises the cost substantially, but a
+      short or common master is still recoverable. Choose a master
+      password that is long, unique and not derived from public
+      information about you.
+    </li>
+    <li>
+      <strong>Phishing.</strong> The extension fills the password field
+      of the active tab, including on look-alike domains. Verify the
+      URL bar before filling.
+    </li>
+    <li>
+      <strong>Shoulder-surfing and physical access.</strong> The Service
+      offers an auto-lock timer and an optional encrypted hint, but it
+      cannot defend against an attacker with sustained physical access
+      to an unlocked device.
+    </li>
+    <li>
+      <strong>Operator compromise of a self-hosted sync deployment.</strong>
+      Confidentiality of the synchronised metadata against a malicious
+      server operator depends on the integrity of the client at the time
+      it is run. Use only client builds you trust.
+    </li>
+  </ul>
+
+  <h2>4. Cryptographic construction</h2>
   <p>
-    Key derivation uses <a
+    Password derivation uses
+    <a
       href="https://datatracker.ietf.org/doc/html/rfc9106"
       target="_blank"
       rel="noopener noreferrer">Argon2id (RFC 9106)</a
-    >, the memory-hard function recommended by OWASP for password hashing.
-    Parameters: 3 iterations, 64 MiB of memory, parallelism 1, 32-byte output.
-    The salt is built from the registrable site domain, the email used at
-    that site, and a per-site counter. The output is then shaped into a
-    password matching the per-site profile.
+    >, the memory-hard function recommended by OWASP for password
+    hashing. Parameters: <strong>3 iterations</strong>, <strong>64 MiB
+    of memory</strong>, <strong>parallelism 1</strong>,
+    <strong>32-byte output</strong>. The salt is built from the
+    registrable site domain, the account identifier used at that site
+    and a per-site counter. The output is shaped into a password
+    matching the per-site profile.
+  </p>
+  <p>
+    Local secrets stored at rest (the optional encrypted master-password
+    hint and, where applicable, the local account index) are encrypted
+    with AES-256-GCM under a wrapping key derived from your master
+    password using PBKDF2-SHA-256. Authentication to the optional
+    self-hosted sync server uses OPAQUE, an asymmetric
+    password-authenticated key-exchange protocol.
   </p>
 
-  <h2>Reporting a vulnerability</h2>
-  <p>
-    If you believe you have found a security vulnerability in the extension,
-    the website, or the cryptographic construction, please report it
-    privately rather than opening a public issue.
-  </p>
+  <h2>5. Release integrity</h2>
   <ul>
     <li>
-      Use GitHub's private vulnerability reporting at <a
-        href="https://github.com/Keyfount/extension/security/advisories/new"
-        target="_blank"
-        rel="noopener noreferrer">github.com/Keyfount/extension/security/advisories/new</a
-      >.
+      <strong>Tagged releases.</strong> Every published release
+      corresponds to a Git tag in the public repository.
     </li>
     <li>
-      Include a clear description, reproduction steps, and the affected
-      version (visible in the extension's "About" panel).
+      <strong>Reproducible builds.</strong> The bundle published to each
+      distribution channel is built from the corresponding tag. You can
+      check out the tag, run the documented build command and compare
+      the resulting bundle against the one shipped by the channel.
     </li>
     <li>
-      We acknowledge new reports within 7 days and aim to publish a fix
-      within 90 days of confirmation. Coordinated disclosure is appreciated.
+      <strong>Signed container images.</strong> Server container images
+      are published to GitHub Container Registry from the Project's
+      automated CI; the image digest is reproducible from the published
+      sources.
     </li>
   </ul>
 
-  <h2>Reproducible builds</h2>
+  <h2>6. Reporting a vulnerability</h2>
   <p>
-    Extension releases are tagged in the repository, and the bundle published
-    to the Chrome Web Store is built from the corresponding tag. To verify a
-    release yourself, check out the tag, run the documented build command, and
-    compare the resulting bundle against the one shipped by the store.
+    If you believe you have found a security vulnerability in any
+    Project component, the website, the cryptographic construction or
+    the build pipeline, please report it <strong>privately</strong>
+    rather than opening a public issue.
+  </p>
+  <ul>
+    <li>
+      <strong>Preferred channel.</strong> GitHub's private vulnerability
+      reporting:
+      <a
+        href="https://github.com/Keyfount/extension/security/advisories/new"
+        target="_blank"
+        rel="noopener noreferrer">github.com/Keyfount/extension/security/advisories/new</a
+      >, or the equivalent advisory page on any other Keyfount
+      repository.
+    </li>
+    <li>
+      <strong>Alternative channel.</strong> Email
+      <a href="mailto:security-keyfount@loule.me">security-keyfount@loule.me</a>.
+    </li>
+    <li>
+      <strong>What to include.</strong> A clear description of the
+      issue, reproduction steps, the affected version (visible in the
+      "About" panel of the application), an assessment of impact and
+      any suggested mitigation.
+    </li>
+  </ul>
+
+  <h2>7. Our commitments</h2>
+  <ul>
+    <li>
+      We acknowledge new reports within <strong>72 hours</strong>.
+    </li>
+    <li>
+      We provide an initial triage and severity assessment within
+      <strong>7 days</strong>.
+    </li>
+    <li>
+      We aim to publish a fix within <strong>90 days</strong> of
+      confirmation, with earlier targets for critical issues.
+    </li>
+    <li>
+      We coordinate disclosure with the reporter and credit them in the
+      release notes and the security advisory, unless they prefer to
+      remain anonymous.
+    </li>
+    <li>
+      We will not take legal action against good-faith security
+      researchers who follow this coordinated-disclosure process and who
+      do not access, modify or destroy data belonging to other users.
+    </li>
+  </ul>
+
+  <h2>8. Out of scope</h2>
+  <ul>
+    <li>
+      Findings that require an already-compromised device, root or
+      administrator privileges, or a malicious browser extension running
+      alongside the Service.
+    </li>
+    <li>
+      Reports that consist solely of automated-scanner output without a
+      demonstrated security impact.
+    </li>
+    <li>
+      Vulnerabilities in third-party services (browser stores, hosting
+      providers, dependencies maintained by other projects) — please
+      report those to the relevant maintainer.
+    </li>
+    <li>
+      The security posture of any self-hosted sync server deployment,
+      which is the responsibility of its operator.
+    </li>
+  </ul>
+
+  <h2>9. Public advisories</h2>
+  <p>
+    Confirmed vulnerabilities are documented in GitHub Security
+    Advisories on the affected repository, with a CVE assigned where
+    appropriate. Subscribe to repository releases to be notified of new
+    advisories.
   </p>
 </LegalPage>
