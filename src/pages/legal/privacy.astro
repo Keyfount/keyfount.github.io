@@ -2,92 +2,271 @@
 import LegalPage from "~/components/LegalPage.astro";
 ---
 
-<LegalPage locale="en" title="Privacy policy" lastUpdated="2026-05-20" path="/legal/privacy">
+<LegalPage locale="en" title="Privacy policy" lastUpdated="2026-05-26" path="/legal/privacy">
   <p>
-    Keyfount is designed to collect nothing. This policy describes the
-    data the extension and the website handle, why, and where it goes — which,
-    by design, is nowhere.
+    This Privacy Policy describes how the Keyfount Project (the
+    "<strong>Project</strong>", "we") handles information when you use the
+    browser extension, the desktop application, the mobile applications,
+    the website at <code>keyfount.github.io</code> or any other software
+    distributed by the Project (together, the "<strong>Service</strong>").
+    Keyfount is engineered around a single principle: the Project
+    operates no user-facing infrastructure and is designed to collect no
+    personal data.
   </p>
 
-  <h2>1. Data we collect</h2>
+  <h2>1. Data controller and contact</h2>
   <p>
-    <strong>None.</strong> The extension and the website do not transmit your
-    master password, derived passwords, email address, site domains, per-site
-    configuration, IP address, browsing history, telemetry, crash reports, or
-    any other personal data to the Project or to any third party.
+    For the purposes of the General Data Protection Regulation
+    ("<strong>GDPR</strong>", Regulation (EU) 2016/679) and the French
+    Data Protection Act ("<em>Loi Informatique et Libertés</em>"), the
+    Project is the data controller for the very limited data described
+    below. Privacy enquiries may be sent to
+    <a href="mailto:privacy-keyfount@loule.me">privacy-keyfount@loule.me</a>.
   </p>
 
-  <h2>2. Data stored locally on your device</h2>
+  <h2>2. Summary — what we do and do not collect</h2>
   <p>
-    The extension stores the following data inside your browser's local
-    extension storage, on your device only:
+    The Project <strong>does not collect, process, transmit, store or
+    share</strong> your master password, derived passwords, account
+    identifiers, site domains, per-site profiles, browsing activity, IP
+    address, device identifiers, telemetry, crash reports or any other
+    personal data. All cryptographic operations are performed locally on
+    your device. The Service does not require an account with the Project.
+  </p>
+
+  <h2>3. Data processed locally on your device</h2>
+  <p>
+    The Service stores the following data exclusively in the local
+    storage of your browser, operating system or device — never on the
+    Project's infrastructure:
   </p>
   <ul>
-    <li>Per-site derivation profiles (length, character classes, counter, suffix rules). Metadata only — never the derived password itself.</li>
-    <li>Your interface preferences (theme, language).</li>
-    <li>An optional, locally-encrypted hint for your master password if you choose to set one.</li>
+    <li>
+      <strong>Per-site derivation profiles</strong> — registrable domain,
+      account identifier, password length, character classes, counter and
+      suffix rules. Metadata only — never the derived password itself.
+    </li>
+    <li>
+      <strong>Interface preferences</strong> — theme, language and
+      session-timeout settings.
+    </li>
+    <li>
+      <strong>Optional encrypted master-password hint</strong> — if you
+      choose to set one, it is encrypted on your device using a key
+      derived from your master password and never leaves the device.
+    </li>
+    <li>
+      <strong>A local visual fingerprint</strong> — a deterministic
+      identicon derived from your master password, displayed to help you
+      detect mistyping. The underlying value is never persisted.
+    </li>
   </ul>
   <p>
-    This data never leaves your device. You can inspect and erase it at any
-    time from the extension settings or from the browser's extension storage
-    inspector.
+    You can inspect or delete this data at any time from the in-app
+    settings panel, from the browser's extension-storage inspector or by
+    uninstalling the Service.
   </p>
 
-  <h2>3. Cookies and trackers</h2>
+  <h2>4. The website (<code>keyfount.github.io</code>)</h2>
   <p>
-    The website does not set cookies and does not embed any third-party
-    analytics, advertising, fingerprinting, or social-media tracker. Open your
-    browser's network inspector while using the site to verify: no requests
-    leave your machine after the initial page load.
+    The website is a static site built with Astro and served from GitHub
+    Pages. The Project does <strong>not</strong> set cookies, does
+    <strong>not</strong> embed analytics, advertising, fingerprinting or
+    social-media trackers and does <strong>not</strong> trigger any
+    network request after the initial page load. You can verify this by
+    opening your browser's network inspector. The interactive
+    "Try it live" demonstration performs the derivation in your browser
+    using WebAssembly; the inputs never leave the page.
+  </p>
+  <p>
+    Because the website is hosted on GitHub Pages, GitHub, Inc. may
+    record standard HTTP access logs (including IP address and
+    user-agent) as part of its infrastructure operations. Those logs are
+    processed by GitHub under its own
+    <a
+      href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+      target="_blank"
+      rel="noopener noreferrer">privacy statement</a
+    >. The Project has no access to them.
   </p>
 
-  <h2>4. Permissions requested by the extension</h2>
+  <h2>5. Permissions requested by the browser extension</h2>
+  <p>
+    The extension requests only the permissions strictly required to
+    operate locally. It declares no <code>host_permissions</code> and
+    cannot reach the network from its content scripts.
+  </p>
   <ul>
     <li>
-      <strong>storage</strong> — to persist per-site derivation profiles
-      locally on your device.
+      <strong><code>storage</code></strong> — to persist per-site
+      derivation profiles, interface preferences and the optional
+      encrypted hint in the browser's extension storage on your device.
     </li>
     <li>
-      <strong>activeTab</strong> — to read the current tab's URL when you
-      explicitly invoke the extension, so it can suggest the right
-      per-site profile. The URL is processed in memory only and never
-      stored or transmitted.
+      <strong><code>activeTab</code></strong> — to read the registrable
+      domain of the current tab when you explicitly invoke the extension,
+      so it can propose the matching profile. The domain is processed in
+      memory only and is never persisted or transmitted by the extension.
     </li>
     <li>
-      <strong>scripting</strong> — to fill the focused password field when
-      you click "fill". The script reads no other data from the page.
+      <strong><code>scripting</code></strong> — to inject the
+      password-fill script into the active tab when you explicitly press
+      "fill". The script reads no other data from the page.
+    </li>
+    <li>
+      <strong><code>alarms</code></strong> — to schedule the local
+      auto-lock timer that clears the in-memory master after a period of
+      inactivity, in line with your session-timeout preference.
+    </li>
+    <li>
+      <strong><code>favicon</code></strong> — to display the favicon of a
+      saved site next to its entry in the account list. Favicons are
+      retrieved by the browser from its existing favicon cache; the
+      extension does not perform additional network requests.
+    </li>
+    <li>
+      <strong><code>contextMenus</code></strong> — to add the
+      "Fill with Keyfount" entry to the browser's right-click menu on
+      password fields.
+    </li>
+  </ul>
+
+  <h2>6. Desktop and mobile applications</h2>
+  <p>
+    The desktop and mobile applications (built with Tauri) follow the
+    same principle as the extension. They perform their cryptographic
+    operations locally, store derivation profiles and preferences in the
+    operating system's application-data directory and request only the
+    capabilities required for those operations (file-system access
+    scoped to the application directory, clipboard access at your
+    explicit request, autofill APIs when integrated with the operating
+    system). They open no outbound network connection by default.
+  </p>
+
+  <h2>7. Optional self-hosted sync server</h2>
+  <p>
+    The Project publishes the source code and container images of an
+    optional sync server. A user who chooses to operate such a server
+    deploys it on infrastructure under that user's own control. With
+    respect to that deployment:
+  </p>
+  <ul>
+    <li>
+      the self-hoster is the data controller and the operator of the
+      service;
+    </li>
+    <li>
+      the Project is neither a controller nor a processor of any data
+      transmitted to that deployment;
+    </li>
+    <li>
+      authentication uses
+      <a
+        href="https://datatracker.ietf.org/doc/rfc9807/"
+        target="_blank"
+        rel="noopener noreferrer">OPAQUE</a
+      >, an asymmetric password-authenticated key-exchange protocol: the
+      server never sees the master password and a complete database dump
+      leaks nothing that an attacker can use to recover it offline;
+    </li>
+    <li>
+      the data exchanged with the server is limited to opaque ciphertexts
+      and ordering metadata; site domains, account identifiers and
+      derivation profiles are encrypted client-side before transmission.
     </li>
   </ul>
   <p>
-    The extension does not request network permissions and cannot reach the
-    network from its content scripts.
+    If you connect a client to a self-hosted sync server, the privacy
+    practices applicable to that server are those of its operator, not
+    those of the Project.
   </p>
 
-  <h2>5. Children's privacy</h2>
+  <h2>8. Cookies and similar technologies</h2>
   <p>
-    The Service is not directed at children under 13. Because the Service
-    collects no data, no specific children's data is ever processed.
+    The website does not set any cookie and uses no equivalent technology
+    (local storage, IndexedDB, ETag tracking, session replay,
+    fingerprinting). The Service uses <code>localStorage</code> within
+    the demonstration page solely to persist your UI preferences (theme,
+    language) on that device; this data is not accessible to the
+    Project.
   </p>
 
-  <h2>6. Your rights</h2>
+  <h2>9. Recipients and transfers</h2>
   <p>
-    Because no personal data leaves your device, there is no data on our side
-    to access, correct, or erase. Under the GDPR and similar laws, your rights
-    of access, rectification, erasure, restriction, portability, and objection
-    apply to the local data stored by the extension — which you control
-    directly through the extension settings.
+    Because the Project processes no personal data on its infrastructure,
+    no personal data is transferred to any recipient, processor or
+    sub-processor. The static hosting of the website by GitHub Pages
+    (operated by GitHub, Inc., USA) is governed by GitHub's own privacy
+    statement and standard contractual clauses applicable to its
+    infrastructure.
   </p>
 
-  <h2>7. Changes</h2>
+  <h2>10. Retention</h2>
   <p>
-    Material changes to this policy will be reflected by updating the "Last
-    updated" date above and, where appropriate, by an in-extension notice on
-    the next update.
+    Data stored locally on your device is retained for as long as you
+    keep the Service installed and is deleted when you remove the
+    relevant entry, clear the application data or uninstall the Service.
+    The Project itself retains no personal data and therefore has no
+    retention period to define.
   </p>
 
-  <h2>8. Contact</h2>
+  <h2>11. Legal basis for processing</h2>
   <p>
-    For any privacy question, open an issue on the project repository at <a
+    To the extent that any incidental processing occurs (for example, the
+    access logs maintained by the hosting provider of the website), the
+    legal basis is the Project's legitimate interest in operating and
+    securing the Service (GDPR art. 6.1.f).
+  </p>
+
+  <h2>12. Your rights</h2>
+  <p>
+    Because no personal data leaves your device under the Project's
+    operation, there is no data on our side to access, rectify or erase.
+    Under the GDPR and similar laws, your rights of access,
+    rectification, erasure, restriction of processing, portability and
+    objection apply to the local data stored by the Service — which you
+    control directly through the in-app settings.
+  </p>
+  <p>
+    You have the right to lodge a complaint with a supervisory authority,
+    in particular in the EU Member State of your residence, place of work
+    or place of the alleged infringement. In France, the competent
+    authority is the
+    <a
+      href="https://www.cnil.fr/"
+      target="_blank"
+      rel="noopener noreferrer">Commission nationale de l'informatique et
+      des libertés (CNIL)</a
+    >.
+  </p>
+
+  <h2>13. Children</h2>
+  <p>
+    The Service is not directed at children under 13 (or the equivalent
+    minimum age in your jurisdiction). Because the Service collects no
+    data, no children's data is ever processed by the Project.
+  </p>
+
+  <h2>14. Automated decision-making and profiling</h2>
+  <p>
+    The Project carries out no automated decision-making and no profiling
+    within the meaning of GDPR art. 22.
+  </p>
+
+  <h2>15. Changes to this policy</h2>
+  <p>
+    Material changes to this policy will be reflected by updating the
+    "Last updated" date above and, where appropriate, by an in-app notice
+    on the next release. The historical text of this policy is preserved
+    in the website's public source repository.
+  </p>
+
+  <h2>16. Contact</h2>
+  <p>
+    For any privacy enquiry, contact
+    <a href="mailto:privacy-keyfount@loule.me">privacy-keyfount@loule.me</a>
+    or open a public issue at
+    <a
       href="https://github.com/Keyfount"
       target="_blank"
       rel="noopener noreferrer">github.com/Keyfount</a

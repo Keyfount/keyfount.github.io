@@ -2,101 +2,295 @@
 import LegalPage from "~/components/LegalPage.astro";
 ---
 
-<LegalPage locale="fr" title="Politique de confidentialité" lastUpdated="2026-05-20" path="/legal/privacy">
+<LegalPage locale="fr" title="Politique de confidentialité" lastUpdated="2026-05-26" path="/legal/privacy">
   <p>
-    Keyfount est conçu pour ne rien collecter. Cette politique décrit
-    quelles données l'extension et le site web manipulent, pourquoi, et où
-    elles vont — c'est-à-dire, par conception, nulle part.
+    La présente Politique de confidentialité décrit la manière dont le
+    Projet Keyfount (le « <strong>Projet</strong> », « nous ») traite les
+    informations lorsque vous utilisez l'extension de navigateur,
+    l'application de bureau, les applications mobiles, le site
+    <code>keyfount.github.io</code> ou tout autre logiciel distribué par
+    le Projet (ensemble, le « <strong>Service</strong> »). Keyfount est
+    conçu autour d'un principe simple : le Projet n'exploite aucune
+    infrastructure orientée utilisateur et est conçu pour ne collecter
+    aucune donnée personnelle.
   </p>
 
-  <h2>1. Données collectées</h2>
+  <h2>1. Responsable de traitement et contact</h2>
   <p>
-    <strong>Aucune.</strong> L'extension et le site web ne transmettent ni
-    votre mot de passe maître, ni les mots de passe dérivés, ni votre
-    adresse email, ni les domaines des sites, ni les configurations par
-    site, ni votre adresse IP, ni votre historique de navigation, ni
-    aucune télémétrie, rapport d'erreur ou autre donnée personnelle, au
-    Projet ni à un tiers.
+    Au sens du Règlement général sur la protection des données
+    (« <strong>RGPD</strong> », règlement (UE) 2016/679) et de la loi
+    française « Informatique et Libertés », le Projet est responsable de
+    traitement pour le très petit périmètre de données décrit ci-dessous.
+    Les demandes relatives à la vie privée peuvent être adressées à
+    <a href="mailto:privacy-keyfount@loule.me">privacy-keyfount@loule.me</a>.
   </p>
 
-  <h2>2. Données stockées localement</h2>
+  <h2>2. En résumé — ce que nous collectons et ne collectons pas</h2>
   <p>
-    L'extension stocke les données suivantes dans le stockage local
-    d'extension de votre navigateur, sur votre appareil uniquement :
+    Le Projet <strong>ne collecte, ne traite, ne transmet, ne stocke ni
+    ne partage</strong> votre mot de passe maître, les mots de passe
+    dérivés, les identifiants de compte, les domaines des sites, les
+    profils par site, votre activité de navigation, votre adresse IP,
+    les identifiants d'appareil, la télémétrie, les rapports d'erreur
+    ou toute autre donnée personnelle. Toutes les opérations
+    cryptographiques sont effectuées localement sur votre appareil. Le
+    Service ne requiert aucun compte auprès du Projet.
+  </p>
+
+  <h2>3. Données traitées localement sur votre appareil</h2>
+  <p>
+    Le Service stocke les données suivantes exclusivement dans le
+    stockage local de votre navigateur, de votre système d'exploitation
+    ou de votre appareil — jamais sur l'infrastructure du Projet :
   </p>
   <ul>
-    <li>Les profils de dérivation par site (longueur, classes de caractères, compteur, règles de suffixe). Métadonnées uniquement — jamais le mot de passe dérivé.</li>
-    <li>Vos préférences d'interface (thème, langue).</li>
-    <li>Un indice optionnel et chiffré localement pour votre mot de passe maître, si vous choisissez d'en définir un.</li>
+    <li>
+      <strong>Profils de dérivation par site</strong> — domaine racine,
+      identifiant de compte, longueur du mot de passe, classes de
+      caractères, compteur et règles de suffixe. Métadonnées
+      uniquement — jamais le mot de passe dérivé.
+    </li>
+    <li>
+      <strong>Préférences d'interface</strong> — thème, langue et
+      réglages d'expiration de session.
+    </li>
+    <li>
+      <strong>Indice optionnel chiffré du mot de passe maître</strong> —
+      si vous choisissez d'en définir un, il est chiffré sur votre
+      appareil au moyen d'une clé dérivée de votre mot de passe maître
+      et ne quitte jamais l'appareil.
+    </li>
+    <li>
+      <strong>Une empreinte visuelle locale</strong> — un identicon
+      déterministe dérivé de votre mot de passe maître, affiché pour
+      vous aider à détecter une faute de frappe. La valeur sous-jacente
+      n'est jamais persistée.
+    </li>
   </ul>
   <p>
-    Ces données ne quittent jamais votre appareil. Vous pouvez les
-    inspecter et les effacer à tout moment depuis les paramètres de
-    l'extension ou via l'inspecteur de stockage d'extension du navigateur.
+    Vous pouvez inspecter ou supprimer ces données à tout moment depuis
+    le panneau de réglages de l'application, depuis l'inspecteur de
+    stockage d'extension du navigateur, ou en désinstallant le Service.
   </p>
 
-  <h2>3. Cookies et traceurs</h2>
+  <h2>4. Le site (<code>keyfount.github.io</code>)</h2>
   <p>
-    Le site web ne dépose aucun cookie et n'intègre aucun analytique
-    tiers, publicité, empreinte numérique ou traceur de réseau social.
-    Ouvrez l'inspecteur réseau de votre navigateur en utilisant le site
-    pour le vérifier : aucune requête ne quitte votre machine après le
-    chargement initial de la page.
+    Le site est un site statique construit avec Astro et servi depuis
+    GitHub Pages. Le Projet <strong>ne dépose aucun cookie</strong>,
+    <strong>n'intègre</strong> aucun analytique, publicité, empreinte
+    numérique ou traceur de réseau social et <strong>ne déclenche</strong>
+    aucune requête réseau après le chargement initial de la page. Vous
+    pouvez le vérifier en ouvrant l'inspecteur réseau de votre
+    navigateur. La démonstration interactive « Essayer en direct »
+    exécute la dérivation dans votre navigateur via WebAssembly ; les
+    entrées ne quittent jamais la page.
+  </p>
+  <p>
+    Le site étant hébergé sur GitHub Pages, GitHub, Inc. peut conserver
+    des journaux d'accès HTTP standard (adresse IP, agent utilisateur)
+    dans le cadre de l'exploitation de son infrastructure. Ces journaux
+    sont traités par GitHub conformément à sa propre
+    <a
+      href="https://docs.github.com/fr/site-policy/privacy-policies/github-general-privacy-statement"
+      target="_blank"
+      rel="noopener noreferrer">déclaration de confidentialité</a
+    >. Le Projet n'y a pas accès.
   </p>
 
-  <h2>4. Permissions demandées par l'extension</h2>
+  <h2>5. Permissions demandées par l'extension</h2>
+  <p>
+    L'extension demande uniquement les permissions strictement
+    nécessaires à son fonctionnement local. Elle ne déclare aucun
+    <code>host_permissions</code> et ne peut pas atteindre le réseau
+    depuis ses scripts de contenu.
+  </p>
   <ul>
     <li>
-      <strong>storage</strong> — pour conserver localement les profils de
-      dérivation par site sur votre appareil.
+      <strong><code>storage</code></strong> — pour conserver les profils
+      de dérivation par site, les préférences d'interface et l'indice
+      chiffré optionnel dans le stockage d'extension du navigateur, sur
+      votre appareil.
     </li>
     <li>
-      <strong>activeTab</strong> — pour lire l'URL de l'onglet courant
-      quand vous activez explicitement l'extension, afin de proposer le
-      bon profil par site. L'URL est traitée en mémoire uniquement, jamais
-      stockée ni transmise.
+      <strong><code>activeTab</code></strong> — pour lire le domaine
+      racine de l'onglet courant quand vous activez explicitement
+      l'extension, afin de proposer le profil correspondant. Le domaine
+      est traité en mémoire uniquement et n'est jamais persisté ni
+      transmis par l'extension.
     </li>
     <li>
-      <strong>scripting</strong> — pour remplir le champ mot de passe
-      ciblé quand vous cliquez sur « remplir ». Le script ne lit aucune
+      <strong><code>scripting</code></strong> — pour injecter le script
+      de remplissage de mot de passe dans l'onglet actif lorsque vous
+      cliquez explicitement sur « remplir ». Le script ne lit aucune
       autre donnée de la page.
     </li>
+    <li>
+      <strong><code>alarms</code></strong> — pour planifier la minuterie
+      locale de verrouillage automatique qui efface le maître en
+      mémoire après une période d'inactivité, conformément à votre
+      réglage d'expiration de session.
+    </li>
+    <li>
+      <strong><code>favicon</code></strong> — pour afficher la favicon
+      d'un site enregistré à côté de son entrée dans la liste des
+      comptes. Les favicons sont récupérées par le navigateur depuis son
+      cache existant ; l'extension n'effectue aucune requête réseau
+      supplémentaire.
+    </li>
+    <li>
+      <strong><code>contextMenus</code></strong> — pour ajouter l'entrée
+      « Remplir avec Keyfount » dans le menu contextuel du clic droit
+      sur les champs de mot de passe.
+    </li>
+  </ul>
+
+  <h2>6. Applications de bureau et mobiles</h2>
+  <p>
+    Les applications de bureau et mobiles (construites avec Tauri)
+    appliquent le même principe que l'extension. Elles effectuent leurs
+    opérations cryptographiques localement, stockent les profils de
+    dérivation et les préférences dans le répertoire de données
+    applicatives du système d'exploitation et ne demandent que les
+    capacités strictement nécessaires à ces opérations (accès au
+    système de fichiers limité au répertoire de l'application, accès
+    au presse-papiers sur action explicite, API d'auto-remplissage
+    lorsqu'elles sont intégrées au système d'exploitation). Elles
+    n'ouvrent aucune connexion réseau sortante par défaut.
+  </p>
+
+  <h2>7. Serveur de synchronisation auto-hébergé optionnel</h2>
+  <p>
+    Le Projet publie le code source et les images conteneur d'un
+    serveur de synchronisation optionnel. L'utilisateur qui choisit
+    d'exploiter un tel serveur le déploie sur une infrastructure
+    placée sous son propre contrôle. À l'égard de ce déploiement :
+  </p>
+  <ul>
+    <li>
+      l'auto-hébergeur est responsable de traitement et exploitant du
+      service ;
+    </li>
+    <li>
+      le Projet n'est ni responsable de traitement, ni sous-traitant
+      des données transmises à ce déploiement ;
+    </li>
+    <li>
+      l'authentification utilise
+      <a
+        href="https://datatracker.ietf.org/doc/rfc9807/"
+        target="_blank"
+        rel="noopener noreferrer">OPAQUE</a
+      >, un protocole asymétrique d'échange de clés authentifié par mot
+      de passe : le serveur ne voit jamais le mot de passe maître et un
+      vidage complet de la base de données ne révèle rien
+      qu'un attaquant puisse utiliser pour le récupérer hors ligne ;
+    </li>
+    <li>
+      les données échangées avec le serveur se limitent à des
+      cryptogrammes opaques et à des métadonnées d'ordre ; les
+      domaines, les identifiants de compte et les profils de
+      dérivation sont chiffrés côté client avant transmission.
+    </li>
   </ul>
   <p>
-    L'extension ne demande pas de permission réseau et ne peut pas
-    atteindre le réseau depuis ses scripts de contenu.
+    Si vous connectez un client à un serveur de synchronisation
+    auto-hébergé, les pratiques de confidentialité applicables à ce
+    serveur sont celles de son exploitant, et non celles du Projet.
   </p>
 
-  <h2>5. Vie privée des enfants</h2>
+  <h2>8. Cookies et technologies similaires</h2>
   <p>
-    Le Service n'est pas destiné aux enfants de moins de 13 ans. Comme le
-    Service ne collecte aucune donnée, aucune donnée spécifique aux
-    enfants n'est jamais traitée.
+    Le site ne dépose aucun cookie et n'utilise aucune technologie
+    équivalente (stockage local, IndexedDB, suivi par ETag, rejouage
+    de session, empreinte numérique). Le Service utilise
+    <code>localStorage</code> au sein de la page de démonstration
+    uniquement pour conserver vos préférences d'interface (thème,
+    langue) sur cet appareil ; ces données ne sont pas accessibles au
+    Projet.
   </p>
 
-  <h2>6. Vos droits</h2>
+  <h2>9. Destinataires et transferts</h2>
   <p>
-    Comme aucune donnée personnelle ne quitte votre appareil, il n'existe
-    aucune donnée de notre côté à laquelle accéder, à rectifier ou à
-    effacer. Au titre du RGPD et de lois similaires, vos droits d'accès,
-    de rectification, d'effacement, de limitation, de portabilité et
-    d'opposition s'appliquent aux données locales stockées par
-    l'extension — que vous contrôlez directement depuis les paramètres de
-    l'extension.
+    Le Projet ne traitant aucune donnée personnelle sur son
+    infrastructure, aucune donnée personnelle n'est transférée à un
+    destinataire, sous-traitant ou sous-sous-traitant. L'hébergement
+    statique du site par GitHub Pages (exploité par GitHub, Inc., aux
+    États-Unis) est régi par la déclaration de confidentialité propre
+    à GitHub et par les clauses contractuelles types applicables à son
+    infrastructure.
   </p>
 
-  <h2>7. Modifications</h2>
+  <h2>10. Conservation</h2>
   <p>
-    Les modifications substantielles de cette politique sont reflétées par
-    la mise à jour de la date « Dernière mise à jour » ci-dessus et, le
-    cas échéant, par une notification dans l'extension lors de la
-    prochaine mise à jour.
+    Les données stockées localement sur votre appareil sont conservées
+    aussi longtemps que vous conservez le Service installé et sont
+    supprimées lorsque vous supprimez l'entrée concernée, effacez les
+    données applicatives ou désinstallez le Service. Le Projet ne
+    conserve lui-même aucune donnée personnelle et n'a donc pas de
+    durée de conservation à définir.
   </p>
 
-  <h2>8. Contact</h2>
+  <h2>11. Base légale du traitement</h2>
   <p>
-    Pour toute question relative à la vie privée, ouvrez un ticket sur le
-    dépôt du projet : <a
+    Dans la mesure où un traitement accessoire intervient (par exemple
+    les journaux d'accès tenus par l'hébergeur du site), la base
+    légale est l'intérêt légitime du Projet à exploiter et à sécuriser
+    le Service (art. 6.1.f du RGPD).
+  </p>
+
+  <h2>12. Vos droits</h2>
+  <p>
+    Aucune donnée personnelle ne quittant votre appareil du fait du
+    Projet, il n'existe aucune donnée de notre côté à laquelle
+    accéder, à rectifier ou à effacer. Au titre du RGPD et de lois
+    similaires, vos droits d'accès, de rectification, d'effacement, de
+    limitation du traitement, de portabilité et d'opposition
+    s'appliquent aux données locales stockées par le Service — que
+    vous contrôlez directement depuis les réglages de l'application.
+  </p>
+  <p>
+    Vous disposez du droit d'introduire une réclamation auprès d'une
+    autorité de contrôle, en particulier dans l'État membre de l'UE de
+    votre résidence, de votre lieu de travail ou du lieu de la
+    prétendue violation. En France, l'autorité compétente est la
+    <a
+      href="https://www.cnil.fr/"
+      target="_blank"
+      rel="noopener noreferrer">Commission nationale de l'informatique
+      et des libertés (CNIL)</a
+    >.
+  </p>
+
+  <h2>13. Mineurs</h2>
+  <p>
+    Le Service n'est pas destiné aux enfants de moins de 13 ans (ou de
+    l'âge minimum équivalent dans votre juridiction). Le Service ne
+    collectant aucune donnée, aucune donnée d'enfant n'est jamais
+    traitée par le Projet.
+  </p>
+
+  <h2>14. Décision automatisée et profilage</h2>
+  <p>
+    Le Projet ne procède à aucune décision automatisée ni à aucun
+    profilage au sens de l'art. 22 du RGPD.
+  </p>
+
+  <h2>15. Modifications de la présente politique</h2>
+  <p>
+    Les modifications substantielles de la présente politique sont
+    reflétées par la mise à jour de la date « Dernière mise à jour »
+    ci-dessus et, le cas échéant, par une notification dans
+    l'application à la prochaine version. L'historique du texte de la
+    présente politique est conservé dans le dépôt source public du
+    site.
+  </p>
+
+  <h2>16. Contact</h2>
+  <p>
+    Pour toute question relative à la vie privée, contactez
+    <a href="mailto:privacy-keyfount@loule.me">privacy-keyfount@loule.me</a>
+    ou ouvrez un ticket public à l'adresse
+    <a
       href="https://github.com/Keyfount"
       target="_blank"
       rel="noopener noreferrer">github.com/Keyfount</a
