@@ -183,7 +183,7 @@ const examples = [
    */
   type Example = { master: string; site: string; email: string };
 
-  const card = document.getElementById("determinism-card") as HTMLElement | null;
+  const card = document.getElementById("determinism-card") as HTMLElement;
   if (card !== null) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const examples = JSON.parse(card.dataset.examples ?? "[]") as Example[];
